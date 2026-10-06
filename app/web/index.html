@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ApexFleet Dubai — Autonomous Supercar Lease &amp; Escrow Protocol</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar (Editable from Admin Tab 2) -->
+  <div id="announcement-bar" style="background: var(--accent-gold); color: #FFFDF8; font-size: 0.85rem; padding: 0.5rem 1rem; text-align: center; font-weight: 500;">
+    <span id="announcement-text">New 2026 Lamborghini Revuelto &amp; Rolls-Royce Spectre now available with zero-deposit dispute guarantee.</span>
+  </div>
+
+  <!-- Header Navigation -->
+  <header style="padding: 1.25rem 2rem; border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); position: sticky; top: 0; z-index: 100;">
+    <div style="max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+      <div>
+        <div class="font-display" style="font-size: 1.6rem; font-weight: 800; letter-spacing: 0.05em; color: var(--text-main);">
+          APEXFLEET DUBAI
+        </div>
+        <a href="https://maps.google.com/?q=ApexFleet+Supercar+Rental+Dubai" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--accent-gold); text-decoration: none; margin-top: 0.2rem; font-weight: 600;">
+          <span>★ 4.98</span>
+          <span style="color: var(--text-muted); font-weight: 400;">(2,140 verified Google reviews)</span>
+        </a>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <button id="lang-toggle-btn" class="btn-outline" style="padding: 0.45rem 0.9rem; font-size: 0.85rem;" onclick="toggleLanguage()">
+          العربية
+        </button>
+        <button id="theme-toggle-btn" class="btn-outline" style="padding: 0.45rem 0.9rem; font-size: 0.85rem;" onclick="toggleTheme()">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <button onclick="openAdminModal()" style="background: var(--accent-gold-soft); border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.45rem 1rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+          Admin
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main style="max-width: 1300px; margin: 0 auto; padding: 2.5rem 1.5rem;">
+
+    <!-- Hero Section -->
+    <section class="bento-grid" style="margin-bottom: 3.5rem;">
+      <div class="bento-card" style="grid-column: span 7; display: flex; flex-direction: column; justify-content: center; padding: 3rem 2.5rem;">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-gold-soft); border: 1px solid var(--border-gold); color: var(--accent-gold); padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; width: fit-content; margin-bottom: 1.5rem;">
+          <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #25D366;"></span>
+          <span data-i18n="badge_protocol">Cryptographic Inspection &amp; Escrow Active</span>
+        </div>
+        <h1 class="font-display" style="font-size: 3.4rem; line-height: 1.1; margin-bottom: 1.25rem; color: var(--text-main);" data-i18n="hero_title">
+          Pure Exotics, Verified Without Friction
+        </h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem; max-width: 540px;" data-i18n="hero_sub">
+          Experience Dubai’s premier supercar collection. Every vehicle undergoes a 16-panel SHA-256 pre-lease inspection with guaranteed escrow deposit release.
+        </p>
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+          <button class="btn-gold" onclick="openBookingModal()" data-i18n="book_lease">Reserve Supercar</button>
+          
+          <!-- Strict WhatsApp Button: ONLY ICON, NO TEXT -->
+          <a href="https://wa.me/971508379080" target="_blank" rel="noopener" class="whatsapp-icon-btn" aria-label="WhatsApp">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.579 1.831.848 2.791.848 3.18 0 5.767-2.587 5.768-5.766.001-3.182-2.585-5.768-5.768-5.768zm7.391 5.765c-.002 4.08-3.315 7.394-7.391 7.394-1.246 0-2.433-.323-3.486-.927l-4.145 1.087 1.107-4.043c-.682-1.096-1.047-2.364-1.048-3.511.002-4.08 3.316-7.394 7.392-7.394 4.076 0 7.39 3.315 7.392 7.394z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="bento-card" style="grid-column: span 5; padding: 0; overflow: hidden; position: relative; min-height: 440px;">
+        <img src="assets/supercar_hero.jpg" alt="Supercar Showroom Dubai" style="width: 100%; height: 100%; object-fit: cover;">
+        <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem; background: rgba(255, 253, 248, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border-gold); border-radius: 1.25rem; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Location</div>
+            <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-main);">Business Bay &amp; DIFC, Dubai</div>
+          </div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--accent-gold);">Same-Day VIP Delivery</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fleet Grid Section -->
+    <section style="margin-bottom: 4rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div style="font-size: 0.85rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">The 2026 Collection</div>
+          <h2 class="font-display" style="font-size: 2.6rem; color: var(--text-main);">Exotic Fleet</h2>
+        </div>
+        <div id="category-filters" style="display: flex; gap: 0.5rem; overflow-x: auto;"></div>
+      </div>
+
+      <div id="fleet-grid" class="bento-grid"></div>
+    </section>
+
+    <!-- Cryptographic Inspection Demo Box -->
+    <section class="bento-card" style="margin-bottom: 4rem;">
+      <h3 class="font-display" style="font-size: 1.8rem; margin-bottom: 0.75rem; color: var(--text-main);">
+        16-Panel Merkle Inspection &amp; Escrow Verification
+      </h3>
+      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 650px;">
+        Every vehicle undergoes automated 360° hashing upon departure and return. If all 16 panels match, your deposit escrow is unreserved instantly.
+      </p>
+      <button class="btn-gold" onclick="runInspectionDemo()">Test Inspection Hash Engine</button>
+      <div id="inspection-demo-result" style="display: none; margin-top: 1.25rem; background: var(--bg-primary); padding: 1rem; border-radius: 0.75rem; font-family: monospace; font-size: 0.85rem; color: var(--text-main); word-break: break-all;"></div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); padding: 3rem 2rem; margin-top: 3rem;">
+    <div style="max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+      <div>
+        <div class="font-display" style="font-size: 1.4rem; color: var(--text-main);">APEXFLEET DUBAI</div>
+        <div style="font-size: 0.85rem; color: var(--text-muted);">The Opus by Omniyat, Business Bay, Dubai, UAE</div>
+      </div>
+      <!-- Subtle developed by signature -->
+      <div style="font-size: 0.85rem; color: var(--text-muted);">
+        Developed by <strong style="color: var(--accent-gold);">Tecnoemprende</strong>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp: Strict Icon ONLY -->
+  <a href="https://wa.me/971508379080" target="_blank" rel="noopener" class="whatsapp-fab" aria-label="WhatsApp">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.579 1.831.848 2.791.848 3.18 0 5.767-2.587 5.768-5.766.001-3.182-2.585-5.768-5.768-5.768zm7.391 5.765c-.002 4.08-3.315 7.394-7.391 7.394-1.246 0-2.433-.323-3.486-.927l-4.145 1.087 1.107-4.043c-.682-1.096-1.047-2.364-1.048-3.511.002-4.08 3.316-7.394 7.392-7.394 4.076 0 7.39 3.315 7.392 7.394z"/></svg>
+  </a>
+
+  <!-- Admin Modal (5 Tabs) -->
+  <div id="admin-modal" class="admin-modal-backdrop" onclick="handleBackdropClick(event)">
+    <div class="admin-drawer">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Tierra Querida Engine</span>
+          <h3 class="font-display" style="font-size: 1.7rem; color: var(--text-main);">ApexFleet Manager</h3>
+        </div>
+        <button onclick="closeAdminModal()" style="background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
+      </div>
+
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchAdminTab('tab-fleet')" data-tab="tab-fleet">1. Fleet Inventory</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-announcements')" data-tab="tab-announcements">2. Announcements</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-categories')" data-tab="tab-categories">3. Categories</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-leases')" data-tab="tab-leases">4. Active Leases &amp; Escrow</button>
+        <button class="tab-btn" onclick="switchAdminTab('tab-settings')" data-tab="tab-settings">5. Supabase &amp; Backup</button>
+      </div>
+
+      <!-- Tab 1: Fleet Inventory -->
+      <div id="tab-fleet" class="tab-content" style="display: block;">
+        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Manage Fleet Vehicles</h4>
+        <form id="car-form" onsubmit="handleSaveCar(event)" style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1rem; margin-bottom: 1.5rem;">
+          <input type="hidden" id="car-id" value="">
+          <div style="margin-bottom: 0.85rem;">
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Vehicle Model</label>
+            <input type="text" id="car-name" required style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);">
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted);">Daily Rate (AED)</label>
+              <input type="number" id="car-price" required style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);">
+            </div>
+            <div>
+              <label style="font-size: 0.8rem; color: var(--text-muted);">Category</label>
+              <select id="car-category" style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);"></select>
+            </div>
+          </div>
+          <div style="margin-bottom: 1rem;">
+            <label style="font-size: 0.8rem; color: var(--text-muted);">Vehicle Photo (Canvas Auto-Compressed &le; 800px)</label>
+            <input type="file" accept="image/*" onchange="handleImageCompress(event)" style="font-size: 0.8rem; color: var(--text-main);">
+            <div id="compression-preview" style="margin-top: 0.5rem; display: none;">
+              <img id="compressed-image-preview" src="" style="width: 80px; height: 80px; object-fit: cover; border-radius: 0.5rem;">
+              <span id="compression-stats" style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem;"></span>
+            </div>
+          </div>
+          <button type="submit" class="btn-gold" style="font-size: 0.85rem;">Save Vehicle</button>
+        </form>
+        <div id="admin-fleet-list"></div>
+      </div>
+
+      <!-- Tab 2: Announcements -->
+      <div id="tab-announcements" class="tab-content" style="display: none;">
+        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Edit Top Announcement</h4>
+        <textarea id="edit-announcement" rows="3" style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main); margin-bottom: 1rem;"></textarea>
+        <button class="btn-gold" onclick="saveAnnouncement()">Update Banner</button>
+      </div>
+
+      <!-- Tab 3: Categories -->
+      <div id="tab-categories" class="tab-content" style="display: none;">
+        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Categories</h4>
+        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+          <input type="text" id="new-cat-input" placeholder="e.g. Hypercars" style="flex: 1; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);">
+          <button class="btn-gold" onclick="addCategory()">Add</button>
+        </div>
+        <div id="admin-cat-list"></div>
+      </div>
+
+      <!-- Tab 4: Leases & Escrow -->
+      <div id="tab-leases" class="tab-content" style="display: none;">
+        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Active Leases &amp; Escrow Ledger</h4>
+        <div id="admin-leases-list"></div>
+      </div>
+
+      <!-- Tab 5: Supabase & Backup -->
+      <div id="tab-settings" class="tab-content" style="display: none;">
+        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Dual-Layer &amp; JSON Backup</h4>
+        <div style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1rem; margin-bottom: 1rem;">
+          <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">Supabase Connection</div>
+          <span style="font-size: 0.75rem; color: #137333; font-weight: 600;">Connected (jyrqzjctkmzdvmraqrcv)</span>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-gold" onclick="exportBackupJSON()" style="font-size: 0.85rem;">Export JSON</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="booking-modal" class="admin-modal-backdrop" onclick="handleBookingBackdrop(event)">
+    <div style="background: var(--bg-surface); max-width: 460px; width: 90%; border-radius: 1.5rem; padding: 2rem; border: 1px solid var(--border-gold); margin: auto;">
+      <h3 class="font-display" style="font-size: 1.8rem; color: var(--text-main); margin-bottom: 0.5rem;">Reserve Supercar</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Immediate VIP reservation with escrow protection.</p>
+      <form onsubmit="handleCustomerBooking(event)">
+        <div style="margin-bottom: 0.85rem;">
+          <label style="font-size: 0.8rem; color: var(--text-muted);">Full Name</label>
+          <input type="text" id="cust-name" required style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-primary); color: var(--text-main);">
+        </div>
+        <div style="margin-bottom: 0.85rem;">
+          <label style="font-size: 0.8rem; color: var(--text-muted);">WhatsApp Number</label>
+          <input type="tel" id="cust-phone" required value="+971 " style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-primary); color: var(--text-main);">
+        </div>
+        <div style="margin-bottom: 1.25rem;">
+          <label style="font-size: 0.8rem; color: var(--text-muted);">Selected Supercar</label>
+          <select id="cust-car" style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-primary); color: var(--text-main);"></select>
+        </div>
+        <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+          <button type="button" class="btn-outline" onclick="closeBookingModal()">Cancel</button>
+          <button type="submit" class="btn-gold">Confirm Reservation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

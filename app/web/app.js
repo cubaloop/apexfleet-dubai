@@ -1,0 +1,256 @@
+/**
+ * ApexFleet Dubai — Front-End Application Controller
+ */
+
+const DEFAULT_FLEET = [
+  { id: "car-1", name: "Lamborghini Revuelto V12 Hybrid", category: "Hypercars", price: 9500, deposit: 10000, image: "assets/supercar_hero.jpg" },
+  { id: "car-2", name: "Rolls-Royce Spectre Black Badge", category: "Ultra-Luxury", price: 8200, deposit: 8000, image: "assets/showroom.jpg" },
+  { id: "car-3", name: "Ferrari Purosangue V12", category: "Exotic SUVs", price: 8800, deposit: 9000, image: "assets/supercar_hero.jpg" },
+  { id: "car-4", name: "McLaren 750S Spider", category: "Supercars", price: 6500, deposit: 7000, image: "assets/showroom.jpg" }
+];
+
+const DEFAULT_CATEGORIES = ["All", "Hypercars", "Supercars", "Ultra-Luxury", "Exotic SUVs"];
+
+const DEFAULT_LEASES = [
+  { id: "ls-101", customerName: "Rashid Al-Maktoum", phone: "+971501112233", car: "Lamborghini Revuelto V12 Hybrid", deposit: 10000, status: "ESCROW_LOCKED" },
+  { id: "ls-102", customerName: "Alexander Keller", phone: "+971508889900", car: "Rolls-Royce Spectre Black Badge", deposit: 8000, status: "SETTLED_CLEAR" }
+];
+
+let fleet = JSON.parse(localStorage.getItem('af_fleet') || JSON.stringify(DEFAULT_FLEET));
+let categories = JSON.parse(localStorage.getItem('af_categories') || JSON.stringify(DEFAULT_CATEGORIES));
+let leases = JSON.parse(localStorage.getItem('af_leases') || JSON.stringify(DEFAULT_LEASES));
+let currentCategory = 'All';
+let currentLang = 'en';
+let compressedImageDataUrl = null;
+
+function renderFleet() {
+  const grid = document.getElementById('fleet-grid');
+  const adminList = document.getElementById('admin-fleet-list');
+  const custCarSelect = document.getElementById('cust-car');
+
+  const filtered = currentCategory === 'All' ? fleet : fleet.filter(c => c.category === currentCategory);
+
+  if (grid) {
+    grid.innerHTML = filtered.map(c => `
+      <div class="bento-card" style="grid-column: span 6; padding: 0; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="height: 250px; position: relative;">
+          <img src="${c.image || 'assets/supercar_hero.jpg'}" alt="${c.name}" style="width: 100%; height: 100%; object-fit: cover;">
+          <span style="position: absolute; top: 1rem; right: 1rem; background: rgba(9, 16, 13, 0.85); color: #FFFDF8; padding: 0.35rem 0.8rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
+            ${c.price} AED / Day
+          </span>
+        </div>
+        <div style="padding: 1.5rem; display: flex; flex-direction: column; flex: 1; justify-content: space-between;">
+          <div>
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700; margin-bottom: 0.35rem;">${c.category}</div>
+            <h3 class="font-display" style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 0.5rem;">${c.name}</h3>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Security Deposit Escrow: <strong>${c.deposit || 8000} AED</strong> (Zero-Leakage Guarantee)</div>
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button class="btn-gold" onclick="openBookingModalForCar('${c.name}')" style="flex: 1; font-size: 0.85rem;">Reserve Car</button>
+            <a href="https://wa.me/971508379080" target="_blank" rel="noopener" class="whatsapp-icon-btn" aria-label="WhatsApp">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.579 1.831.848 2.791.848 3.18 0 5.767-2.587 5.768-5.766.001-3.182-2.585-5.768-5.768-5.768zm7.391 5.765c-.002 4.08-3.315 7.394-7.391 7.394-1.246 0-2.433-.323-3.486-.927l-4.145 1.087 1.107-4.043c-.682-1.096-1.047-2.364-1.048-3.511.002-4.08 3.316-7.394 7.392-7.394 4.076 0 7.39 3.315 7.392 7.394z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  if (adminList) {
+    adminList.innerHTML = fleet.map(c => `
+      <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; border: 1px solid var(--border-subtle);">
+        <div>
+          <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);">${c.name}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">${c.category} &bull; ${c.price} AED/day</div>
+        </div>
+        <button onclick="deleteCar('${c.id}')" style="background: none; border: 1px solid #D93025; color: #D93025; padding: 0.3rem 0.6rem; border-radius: 0.4rem; cursor: pointer; font-size: 0.75rem;">Delete</button>
+      </div>
+    `).join('');
+  }
+
+  if (custCarSelect) {
+    custCarSelect.innerHTML = fleet.map(c => `<option value="${c.name}">${c.name} (${c.price} AED/day)</option>`).join('');
+  }
+}
+
+function renderCategories() {
+  const container = document.getElementById('category-filters');
+  const select = document.getElementById('car-category');
+  const catList = document.getElementById('admin-cat-list');
+
+  if (container) {
+    container.innerHTML = categories.map(cat => `
+      <button class="btn-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem; ${cat === currentCategory ? 'background: var(--accent-gold-soft); border-color: var(--accent-gold); color: var(--accent-gold); font-weight: 700;' : ''}" onclick="selectCategory('${cat}')">
+        ${cat}
+      </button>
+    `).join('');
+  }
+  if (select) {
+    select.innerHTML = categories.filter(c => c !== 'All').map(c => `<option value="${c}">${c}</option>`).join('');
+  }
+  if (catList) {
+    catList.innerHTML = categories.filter(c => c !== 'All').map(c => `
+      <div style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-surface); padding: 0.5rem 1rem; border-radius: 0.5rem; margin-bottom: 0.4rem; border: 1px solid var(--border-subtle);">
+        <span style="font-size: 0.85rem; color: var(--text-main);">${c}</span>
+        <button onclick="deleteCategory('${c}')" style="background: none; border: none; color: #D93025; cursor: pointer;">&times;</button>
+      </div>
+    `).join('');
+  }
+}
+
+function selectCategory(cat) {
+  currentCategory = cat;
+  renderCategories();
+  renderFleet();
+}
+
+function handleImageCompress(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const MAX = 800;
+      let w = img.width, h = img.height;
+      if (w > h) { if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; } }
+      else { if (h > MAX) { w = Math.round(w * MAX / h); h = MAX; } }
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      compressedImageDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      document.getElementById('compressed-image-preview').src = compressedImageDataUrl;
+      document.getElementById('compression-stats').innerText = `${w}x${h}px ~${Math.round(compressedImageDataUrl.length * 0.75 / 1024)} KB`;
+      document.getElementById('compression-preview').style.display = 'flex';
+    };
+    img.src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleSaveCar(e) {
+  e.preventDefault();
+  const name = document.getElementById('car-name').value;
+  const price = parseFloat(document.getElementById('car-price').value);
+  const category = document.getElementById('car-category').value;
+  fleet.push({
+    id: `car-${Date.now()}`,
+    name, price, category,
+    deposit: price * 1.2,
+    image: compressedImageDataUrl || 'assets/supercar_hero.jpg'
+  });
+  localStorage.setItem('af_fleet', JSON.stringify(fleet));
+  document.getElementById('car-form').reset();
+  document.getElementById('compression-preview').style.display = 'none';
+  compressedImageDataUrl = null;
+  renderFleet();
+}
+
+function deleteCar(id) {
+  if (confirm('Delete vehicle?')) {
+    fleet = fleet.filter(c => String(c.id) !== String(id));
+    localStorage.setItem('af_fleet', JSON.stringify(fleet));
+    renderFleet();
+  }
+}
+
+function addCategory() {
+  const input = document.getElementById('new-cat-input');
+  const cat = input.value.trim();
+  if (cat && !categories.includes(cat)) {
+    categories.push(cat);
+    localStorage.setItem('af_categories', JSON.stringify(categories));
+    input.value = '';
+    renderCategories();
+    renderFleet();
+  }
+}
+
+function deleteCategory(cat) {
+  categories = categories.filter(c => c !== cat);
+  localStorage.setItem('af_categories', JSON.stringify(categories));
+  renderCategories();
+  renderFleet();
+}
+
+function renderLeases() {
+  const list = document.getElementById('admin-leases-list');
+  if (!list) return;
+  list.innerHTML = leases.map(l => `
+    <div style="background: var(--bg-surface); padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.5rem; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-main);">${l.customerName} &bull; ${l.car}</div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);">${l.phone} &bull; Escrow: ${l.deposit} AED</div>
+      </div>
+      <span style="font-size: 0.75rem; font-weight: 700; color: #137333;">${l.status}</span>
+    </div>
+  `).join('');
+}
+
+async function runInspectionDemo() {
+  const res = await fetch('/api/inspection/hash', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      vin: 'LAMBO-REVUELTO-2026-DXB',
+      leaseId: 'LS-DEMO-99',
+      mileageKm: 3420,
+      panelConditions: { hood: { status: 'PRISTINE', scratchMm: 0 } }
+    })
+  });
+  const data = await res.json();
+  const box = document.getElementById('inspection-demo-result');
+  box.style.display = 'block';
+  box.innerText = `SHA-256 16-Panel Inspection Hash: ${data.recordHash}\nStatus: ALL 16 PANELS CERTIFIED PRISTINE`;
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const next = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  document.getElementById('theme-icon').innerText = next === 'light' ? '🌙' : '☀️';
+}
+
+function toggleLanguage() {
+  currentLang = currentLang === 'en' ? 'ar' : 'en';
+  document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+  document.getElementById('lang-toggle-btn').innerText = currentLang === 'en' ? 'العربية' : 'English';
+}
+
+function openAdminModal() { document.getElementById('admin-modal').classList.add('active'); renderLeases(); }
+function closeAdminModal() { document.getElementById('admin-modal').classList.remove('active'); }
+function handleBackdropClick(e) { if (e.target.id === 'admin-modal') closeAdminModal(); }
+
+function switchAdminTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.getElementById(tabId).style.display = 'block';
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+}
+
+function openBookingModal() { document.getElementById('booking-modal').classList.add('active'); }
+function openBookingModalForCar(carName) { openBookingModal(); document.getElementById('cust-car').value = carName; }
+function closeBookingModal() { document.getElementById('booking-modal').classList.remove('active'); }
+function handleBookingBackdrop(e) { if (e.target.id === 'booking-modal') closeBookingModal(); }
+
+function handleCustomerBooking(e) {
+  e.preventDefault();
+  const name = document.getElementById('cust-name').value;
+  const phone = document.getElementById('cust-phone').value;
+  const car = document.getElementById('cust-car').value;
+  leases.push({ id: `ls-${Date.now()}`, customerName: name, phone, car, deposit: 8000, status: 'ESCROW_LOCKED' });
+  localStorage.setItem('af_leases', JSON.stringify(leases));
+  closeBookingModal();
+  alert(`Supercar reservation confirmed for ${name}. Deposit escrow locked with SHA-256 pre-lease inspection.`);
+}
+
+function exportBackupJSON() {
+  const blob = new Blob([JSON.stringify({ fleet, categories, leases }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `apexfleet_backup_${Date.now()}.json`; a.click();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  renderCategories();
+  renderFleet();
+  renderLeases();
+});

@@ -1,0 +1,30 @@
+{
+  "name": "apexfleet-dubai",
+  "version": "1.0.0",
+  "description": "Autonomous Luxury Exotic Car Lease Protocol with Cryptographic Damage Verification & Deposit Escrow",
+  "main": "app/server/index.js",
+  "scripts": {
+    "start": "node app/server/index.js",
+    "test": "node tests/run_all_tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cubaloop/apexfleet-dubai.git"
+  },
+  "keywords": [
+    "supercar-rental-dubai",
+    "cryptographic-inspection",
+    "escrow-protocol",
+    "merkle-audit",
+    "uae-luxury"
+  ],
+  "author": "David (cubaloop) / Tecnoemprende",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.6",
+    "express": "^5.2.1",
+    "fast-check": "^4.10.2"
+  }
+}
