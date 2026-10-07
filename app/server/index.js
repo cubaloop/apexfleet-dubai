@@ -9,7 +9,8 @@ const {
   LeaseLedger,
   hashLeaf,
   validateFramingAndQuality,
-  comparePanelForensics
+  comparePanelForensics,
+  analyzeMicroDifferences
 } = require('../core');
 const { startWakeLockDaemon } = require('./wakeLock');
 
@@ -94,6 +95,20 @@ app.post('/api/inspection/compare-forensics', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Both preImage and postImage are required' });
     }
     const result = await comparePanelForensics(preImage, postImage, panel || 'hood', depositAmountAed || 8000);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 4d. POST /api/diff/analyze: Sub-Pixel Micro-Differential Optical Appraisal Engine (Groq Vision)
+app.post('/api/diff/analyze', async (req, res) => {
+  try {
+    const { imageA, imageB, heatmapImage, objectType, metadata } = req.body;
+    if (!imageA || !imageB) {
+      return res.status(400).json({ success: false, error: 'Both imageA and imageB are required' });
+    }
+    const result = await analyzeMicroDifferences(imageA, imageB, heatmapImage, objectType || 'supercar_panel', metadata || {});
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

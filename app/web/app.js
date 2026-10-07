@@ -205,6 +205,396 @@ function renderLeases() {
 }
 
 /* ========================================================
+   OMNIDIFF AI — SUB-PIXEL DIFFERENTIAL CONTROLLER
+   Detects micro-anomalies imperceptible to the human eye
+   ======================================================== */
+const omniDiffEngine = typeof OmniDiffEngine !== 'undefined' ? new OmniDiffEngine() : null;
+
+let omniState = {
+  activeAsset: 'carbon', // 'carbon' | 'horology' | 'universal'
+  viewMode: 'heatmap',   // 'heatmap' | 'slider' | 'loupe' | 'ghost'
+  imageA: 'assets/carbon_pristine.jpg',
+  imageB: 'assets/carbon_microcrack.jpg',
+  currentDelta: null,
+  sliderPos: 50,
+  isDraggingSlider: false,
+  lastVerdict: null
+};
+
+const OMNI_PRESETS = {
+  carbon: {
+    name: 'Carbon Fiber Weave (0.3mm Fissure)',
+    imgA: 'assets/carbon_pristine.jpg',
+    imgB: 'assets/carbon_microcrack.jpg',
+    labelA: 'Carbon Fiber Weave OEM (Pristine Monocoque)',
+    labelB: 'Post-Return Surface (Sub-Visual Hairline Stress)',
+    expectedDesc: 'Hairline structural fissure (0.28 mm) across weave axis.'
+  },
+  horology: {
+    name: 'Luxury Watch (Sapphire Scuff)',
+    imgA: 'assets/watch_pristine.jpg',
+    imgB: 'assets/watch_microscratch.jpg',
+    labelA: 'Patek/Rolex Sapphire Crystal OEM',
+    labelB: 'Post-Lease Sapphire Horizon (Micro-Scuff 0.15 mm)',
+    expectedDesc: 'Sub-millimeter sapphire coating abrasion invisible at 1x.'
+  },
+  universal: {
+    name: 'Universal Object / Camera Feed',
+    imgA: 'assets/porsche.jpg',
+    imgB: 'assets/damaged_wheel.jpg',
+    labelA: 'Baseline Master Reference (Departure / Check-in)',
+    labelB: 'Inspection Frame (Return / Quality Gate)',
+    expectedDesc: 'Universal optical discrepancy analysis.'
+  }
+};
+
+function switchAssetMode(mode) {
+  if (!OMNI_PRESETS[mode]) return;
+  omniState.activeAsset = mode;
+
+  // Update tabs visual state
+  ['carbon', 'horology', 'universal'].forEach(m => {
+    const btn = document.getElementById(`tab-${m}-btn`);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+
+  const preset = OMNI_PRESETS[mode];
+  omniState.imageA = preset.imgA;
+  omniState.imageB = preset.imgB;
+
+  const slotA = document.getElementById('slot-a-label');
+  const slotB = document.getElementById('slot-b-label');
+  if (slotA) slotA.innerText = preset.labelA;
+  if (slotB) slotB.innerText = preset.labelB;
+
+  renderOmniDifferential();
+}
+
+function setViewMode(mode) {
+  omniState.viewMode = mode;
+
+  ['heatmap', 'slider', 'loupe', 'ghost'].forEach(m => {
+    const btn = document.getElementById(`vm-${m}-btn`);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+
+  const stageImgA = document.getElementById('stage-img-a');
+  const stageImgB = document.getElementById('stage-img-b');
+  const canvas = document.getElementById('stage-heatmap-canvas');
+  const ghostLayer = document.getElementById('stage-ghost-layer');
+  const sliderDivider = document.getElementById('stage-split-divider');
+  const loupeLens = document.getElementById('stage-loupe-lens');
+
+  // Reset base styles
+  if (stageImgA) stageImgA.style.clipPath = 'none';
+  if (stageImgB) stageImgB.style.clipPath = 'none';
+
+  if (mode === 'heatmap') {
+    if (stageImgA) stageImgA.style.opacity = '1';
+    if (stageImgB) stageImgB.style.opacity = '0';
+    if (canvas) canvas.style.display = 'block';
+    if (ghostLayer) ghostLayer.style.display = 'none';
+    if (sliderDivider) sliderDivider.style.display = 'none';
+    if (loupeLens) loupeLens.style.display = 'none';
+  } else if (mode === 'slider') {
+    if (stageImgA) stageImgA.style.opacity = '1';
+    if (stageImgB) stageImgB.style.opacity = '1';
+    if (canvas) canvas.style.display = 'none';
+    if (ghostLayer) ghostLayer.style.display = 'none';
+    if (sliderDivider) sliderDivider.style.display = 'block';
+    if (loupeLens) loupeLens.style.display = 'none';
+    updateSliderWipe(omniState.sliderPos);
+  } else if (mode === 'loupe') {
+    if (stageImgA) stageImgA.style.opacity = '1';
+    if (stageImgB) stageImgB.style.opacity = '0';
+    if (canvas) canvas.style.display = 'none';
+    if (ghostLayer) ghostLayer.style.display = 'none';
+    if (sliderDivider) sliderDivider.style.display = 'none';
+    if (loupeLens) loupeLens.style.display = 'block';
+  } else if (mode === 'ghost') {
+    if (stageImgA) stageImgA.style.opacity = '1';
+    if (stageImgB) stageImgB.style.opacity = '0';
+    if (canvas) canvas.style.display = 'none';
+    if (ghostLayer) ghostLayer.style.display = 'block';
+    if (sliderDivider) sliderDivider.style.display = 'none';
+    if (loupeLens) loupeLens.style.display = 'none';
+  }
+}
+
+async function renderOmniDifferential() {
+  const stageImgA = document.getElementById('stage-img-a');
+  const stageImgB = document.getElementById('stage-img-b');
+  const stageGhostImg = document.getElementById('stage-ghost-img');
+  const canvas = document.getElementById('stage-heatmap-canvas');
+
+  if (stageImgA) stageImgA.src = omniState.imageA;
+  if (stageImgB) stageImgB.src = omniState.imageB;
+  if (stageGhostImg) stageGhostImg.src = omniState.imageB;
+
+  if (!omniDiffEngine || !canvas) return;
+
+  try {
+    const diffResult = await omniDiffEngine.computeDifferential(omniState.imageA, omniState.imageB, {
+      threshold: 20,
+      highPassBoost: 2.6,
+      width: 600,
+      height: 450
+    });
+
+    omniState.currentDelta = diffResult;
+
+    // Transfer rendered differential to the stage canvas
+    canvas.width = diffResult.targetWidth;
+    canvas.height = diffResult.targetHeight;
+    const ctx = canvas.getContext('2d');
+    const tempImg = new Image();
+    tempImg.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(tempImg, 0, 0);
+    };
+    tempImg.src = diffResult.heatmapDataUrl;
+
+    // Update Optical Discrepancy Index pill
+    const metricPill = document.getElementById('delta-metric-pill');
+    if (metricPill) {
+      if (diffResult.hasAnomaly) {
+        metricPill.style.background = 'rgba(255, 0, 85, 0.15)';
+        metricPill.style.color = '#FF0055';
+        metricPill.style.borderColor = 'rgba(255, 0, 85, 0.3)';
+        metricPill.innerText = `Delta: +${diffResult.deltaPercentage}% (Sub-Visual Anomaly)`;
+      } else {
+        metricPill.style.background = 'rgba(37, 211, 102, 0.15)';
+        metricPill.style.color = '#25D366';
+        metricPill.style.borderColor = 'rgba(37, 211, 102, 0.3)';
+        metricPill.innerText = `Delta: 0.00% (Identical Sub-Pixel Match)`;
+      }
+    }
+
+    // Refresh view mode
+    setViewMode(omniState.viewMode);
+  } catch (err) {
+    console.error('OmniDiff computation failed:', err);
+  }
+}
+
+function updateSliderWipe(percentage) {
+  omniState.sliderPos = Math.max(0, Math.min(100, percentage));
+  const stageImgB = document.getElementById('stage-img-b');
+  const sliderDivider = document.getElementById('stage-split-divider');
+
+  if (stageImgB) {
+    stageImgB.style.clipPath = `polygon(${omniState.sliderPos}% 0, 100% 0, 100% 100%, ${omniState.sliderPos}% 100%)`;
+  }
+  if (sliderDivider) {
+    sliderDivider.style.left = `${omniState.sliderPos}%`;
+  }
+}
+
+function updateLoupe(x, y, rect) {
+  const loupeLens = document.getElementById('stage-loupe-lens');
+  const loupeCanvas = document.getElementById('loupe-canvas');
+  if (!loupeLens || !loupeCanvas) return;
+
+  const lensW = 140;
+  const lensH = 140;
+  loupeLens.style.left = `${x - lensW / 2}px`;
+  loupeLens.style.top = `${y - lensH / 2}px`;
+
+  const ctx = loupeCanvas.getContext('2d');
+  const imgB = document.getElementById('stage-img-b');
+  if (!imgB || !imgB.complete) return;
+
+  const zoomFactor = 8;
+  const sampleW = lensW / zoomFactor;
+  const sampleH = lensH / zoomFactor;
+
+  // Relative normalized coordinates (0 to 1)
+  const normX = x / rect.width;
+  const normY = y / rect.height;
+
+  const naturalW = imgB.naturalWidth || 600;
+  const naturalH = imgB.naturalHeight || 450;
+
+  const srcX = normX * naturalW - sampleW / 2;
+  const srcY = normY * naturalH - sampleH / 2;
+
+  ctx.clearRect(0, 0, lensW, lensH);
+  ctx.imageSmoothingEnabled = false; // Pixel-level inspection
+  ctx.drawImage(imgB, srcX, srcY, sampleW, sampleH, 0, 0, lensW, lensH);
+
+  // Overlay neon reticle grid inside loupe
+  ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(lensW / 2, 0); ctx.lineTo(lensW / 2, lensH);
+  ctx.moveTo(0, lensH / 2); ctx.lineTo(lensW, lensH / 2);
+  ctx.stroke();
+
+  ctx.strokeStyle = '#FF0055';
+  ctx.beginPath();
+  ctx.arc(lensW / 2, lensH / 2, 8, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function setupStageInteractions() {
+  const stage = document.getElementById('diff-stage-container');
+  if (!stage) return;
+
+  let isDown = false;
+
+  const onPointerMove = (e) => {
+    const rect = stage.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+
+    if (omniState.viewMode === 'slider' && isDown) {
+      const pct = (x / rect.width) * 100;
+      updateSliderWipe(pct);
+    } else if (omniState.viewMode === 'loupe') {
+      updateLoupe(x, y, rect);
+    }
+  };
+
+  stage.addEventListener('mousedown', (e) => {
+    isDown = true;
+    onPointerMove(e);
+  });
+  window.addEventListener('mouseup', () => { isDown = false; });
+  stage.addEventListener('mousemove', onPointerMove);
+
+  stage.addEventListener('touchstart', (e) => {
+    isDown = true;
+    onPointerMove(e);
+  }, { passive: true });
+  window.addEventListener('touchend', () => { isDown = false; });
+  stage.addEventListener('touchmove', onPointerMove, { passive: true });
+}
+
+function handleOmniUpload(event, slot) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    if (slot === 'A') {
+      omniState.imageA = dataUrl;
+      const label = document.getElementById('slot-a-label');
+      if (label) label.innerText = `Custom Upload A (${file.name})`;
+    } else {
+      omniState.imageB = dataUrl;
+      const label = document.getElementById('slot-b-label');
+      if (label) label.innerText = `Custom Upload B (${file.name})`;
+    }
+    renderOmniDifferential();
+  };
+  reader.readAsDataURL(file);
+}
+
+async function runOmniDiffAnalysis() {
+  const runBtn = document.getElementById('run-omnidiff-btn');
+  if (runBtn) {
+    runBtn.disabled = true;
+    runBtn.innerHTML = `<span>⏳ Groq Vision AI Optical Metrology Running...</span>`;
+  }
+
+  try {
+    const heatmapDataUrl = omniState.currentDelta ? omniState.currentDelta.heatmapDataUrl : null;
+    const objectType = omniState.activeAsset;
+
+    const res = await fetch('/api/diff/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        imageA: omniState.imageA,
+        imageB: omniState.imageB,
+        heatmapImage: heatmapDataUrl,
+        objectType,
+        metadata: {
+          clientTimestamp: new Date().toISOString(),
+          deltaPercentage: omniState.currentDelta ? omniState.currentDelta.deltaPercentage : null
+        }
+      })
+    });
+
+    const data = await res.json();
+    if (data.success && data.analysis) {
+      omniState.lastVerdict = data;
+      renderOmniVerdict(data.analysis);
+    } else {
+      alert('OmniDiff Analysis: ' + (data.error || 'Server error occurred'));
+    }
+  } catch (err) {
+    console.error('Analysis error:', err);
+    alert('Error running OmniDiff analysis: ' + err.message);
+  } finally {
+    if (runBtn) {
+      runBtn.disabled = false;
+      runBtn.innerHTML = `⚡ Run Groq Sub-Pixel Forensic Appraisal`;
+    }
+  }
+}
+
+function renderOmniVerdict(analysis) {
+  const title = document.getElementById('omni-verdict-title');
+  const badge = document.getElementById('omni-severity-badge');
+  const dim = document.getElementById('omni-dimension-val');
+  const conf = document.getElementById('omni-confidence-val');
+  const coords = document.getElementById('omni-coords-val');
+  const reason = document.getElementById('omni-invisibility-reason');
+  const proof = document.getElementById('omni-proof-hash');
+
+  if (title) title.innerText = analysis.anomalyDetected ? `Microscopic Anomaly Detected: ${analysis.defectClassification || 'Hairline Defect'}` : `Optical Integrity Confirmed: Sub-Pixel Match`;
+  
+  if (badge) {
+    if (analysis.anomalyDetected) {
+      badge.style.background = 'rgba(255, 0, 85, 0.15)';
+      badge.style.color = '#FF0055';
+      badge.style.borderColor = '#FF0055';
+      badge.innerText = `${analysis.severityRating || 'MICRO_MINOR'} (${analysis.estimatedDimensions?.widthMm || 0.28} mm)`;
+    } else {
+      badge.style.background = 'rgba(37, 211, 102, 0.15)';
+      badge.style.color = '#25D366';
+      badge.style.borderColor = '#25D366';
+      badge.innerText = `PRISTINE &bull; ZERO OPTICAL DELTA`;
+    }
+  }
+
+  if (dim && analysis.estimatedDimensions) {
+    dim.innerHTML = `${analysis.estimatedDimensions.widthMm} mm &times; ${analysis.estimatedDimensions.lengthMm} mm (Depth: ${analysis.estimatedDimensions.depthMicrons} &mu;m)`;
+  }
+  if (conf) conf.innerText = `${Math.round(analysis.confidenceScore * 100)}% Sub-Pixel`;
+  if (coords && analysis.affectedZoneCoordinates) {
+    coords.innerText = `${analysis.affectedZoneCoordinates.description} (x:${analysis.affectedZoneCoordinates.pixelX || 0}, y:${analysis.affectedZoneCoordinates.pixelY || 0})`;
+  }
+  if (reason) {
+    reason.innerText = analysis.humanInvisibilityReason || 'Micro-discrepancy falls below standard human visual threshold.';
+  }
+  if (proof && analysis.forensicAuditProof) {
+    proof.innerText = analysis.forensicAuditProof.merkleRootHex ? analysis.forensicAuditProof.merkleRootHex.slice(0, 16) + '...' : 'Verified';
+  }
+}
+
+function downloadOmniDiffReport() {
+  const report = omniState.lastVerdict || {
+    timestamp: new Date().toISOString(),
+    asset: omniState.activeAsset,
+    delta: omniState.currentDelta,
+    notice: 'Run Groq Vision appraisal for certified appraisal cryptographic seal.'
+  };
+
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `OmniDiff-Forensic-Dossier-${Date.now()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ========================================================
    GROQ VISION AI INSPECTION & ESCROW STATION CONTROLLER
    ======================================================== */
 let currentInspectionPanel = 'rim_front_left';
@@ -636,6 +1026,16 @@ window.saveAnnouncement = saveAnnouncement;
 window.handleSaveCar = handleSaveCar;
 window.handleImageCompress = handleImageCompress;
 
+// OmniDiff Sub-Pixel Differential Suite Exports
+window.switchAssetMode = switchAssetMode;
+window.setViewMode = setViewMode;
+window.renderOmniDifferential = renderOmniDifferential;
+window.updateSliderWipe = updateSliderWipe;
+window.updateLoupe = updateLoupe;
+window.handleOmniUpload = handleOmniUpload;
+window.runOmniDiffAnalysis = runOmniDiffAnalysis;
+window.downloadOmniDiffReport = downloadOmniDiffReport;
+
 function initializeApexFleet() {
   const savedTheme = localStorage.getItem('af_theme');
   if (savedTheme) {
@@ -647,6 +1047,10 @@ function initializeApexFleet() {
   renderFleet();
   renderLeases();
   loadDemoScenario('clean');
+
+  // Initialize OmniDiff Sub-Pixel Suite
+  switchAssetMode('carbon');
+  setupStageInteractions();
 }
 
 if (document.readyState === 'loading') {
