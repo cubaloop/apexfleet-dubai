@@ -277,6 +277,7 @@ Respond strictly in JSON with this exact schema:
   try {
     const payload = {
       model: 'qwen/qwen3.8-27b',
+      max_tokens: 350,
       messages: [{ role: 'user', content: userContent }],
       temperature: 0.1,
       response_format: { type: 'json_object' }

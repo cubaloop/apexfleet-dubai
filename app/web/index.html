@@ -1,614 +1,286 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light">
+<html lang="en" dir="ltr" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>ApexFleet Dubai — Autonomous Supercar Lease &amp; Escrow Protocol</title>
-  <link rel="stylesheet" href="style.css?v=2.0">
+  <title>OmniDiff AI — Sub-Pixel Optical Differential Engine</title>
+  <link rel="stylesheet" href="style.css?v=5.0">
 </head>
 <body>
 
-  <!-- Top Announcement Bar (Editable from Admin Tab 2) -->
-  <div id="announcement-bar" style="background: var(--accent-gold); color: #FFFDF8; font-size: 0.85rem; padding: 0.5rem 1rem; text-align: center; font-weight: 500;">
-    <span id="announcement-text">New 2026 Lamborghini Revuelto &amp; Rolls-Royce Spectre now available with zero-deposit dispute guarantee.</span>
-  </div>
-
-  <!-- Header Navigation -->
-  <header style="padding: 1.25rem 2rem; border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); position: sticky; top: 0; z-index: 100;">
-    <div style="max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
-      <div>
-        <div class="font-display" style="font-size: 1.6rem; font-weight: 800; letter-spacing: 0.05em; color: var(--text-main);">
-          APEXFLEET DUBAI
+  <!-- Top Real-time System Bar -->
+  <header class="hud-header">
+    <div class="hud-header-inner">
+      <div class="brand-zone">
+        <div class="brand-badge">
+          <span class="pulsing-dot"></span>
+          <span>OPTICAL METROLOGY PROTOCOL &bull; SUB-PIXEL 0.1mm</span>
         </div>
-        <a href="https://maps.google.com/?q=ApexFleet+Supercar+Rental+Dubai" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--accent-gold); text-decoration: none; margin-top: 0.2rem; font-weight: 600;">
-          <span>★ 4.98</span>
-          <span style="color: var(--text-muted); font-weight: 400;">(2,140 verified Google reviews)</span>
-        </a>
+        <h1 class="font-display brand-title">OMNIDIFF AI</h1>
+        <p class="brand-sub">Sub-Visual Differential Optical Recognition Engine</p>
       </div>
 
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <button id="lang-toggle-btn" class="btn-outline" style="padding: 0.45rem 0.9rem; font-size: 0.85rem;" onclick="toggleLanguage()">
-          العربية
+      <div class="header-controls">
+        <div class="live-telemetry">
+          <span class="tele-label">OPTICAL STATUS:</span>
+          <span id="tele-status" class="tele-val ready">CALIBRATED</span>
+        </div>
+        <button id="theme-toggle-btn" class="btn-icon" onclick="toggleTheme()" title="Toggle Theme">
+          <span id="theme-icon">☀️</span>
         </button>
-        <button id="theme-toggle-btn" class="btn-outline" style="padding: 0.45rem 0.9rem; font-size: 0.85rem;" onclick="toggleTheme()">
-          <span id="theme-icon">🌙</span>
-        </button>
-        <button onclick="openAdminModal()" style="background: var(--accent-gold-soft); border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 0.45rem 1rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
-          Admin
+        <button id="camera-toggle-btn" class="btn-action pulse" onclick="toggleLiveCamera()">
+          📹 Activate Live Camera
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main style="max-width: 1300px; margin: 0 auto; padding: 2.5rem 1.5rem;">
+  <!-- Main Pure Optical Suite Container -->
+  <main class="main-suite-container">
 
-    <!-- Hero Section -->
-    <section class="bento-grid" style="margin-bottom: 3.5rem;">
-      <div class="bento-card" style="grid-column: span 7; display: flex; flex-direction: column; justify-content: center; padding: 3rem 2.5rem;">
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-gold-soft); border: 1px solid var(--border-gold); color: var(--accent-gold); padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; width: fit-content; margin-bottom: 1.5rem;">
-          <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #25D366;"></span>
-          <span data-i18n="badge_protocol">Cryptographic Inspection &amp; Escrow Active</span>
-        </div>
-        <h1 class="font-display" style="font-size: 3.4rem; line-height: 1.1; margin-bottom: 1.25rem; color: var(--text-main);" data-i18n="hero_title">
-          Pure Exotics, Verified Without Friction
-        </h1>
-        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem; max-width: 540px;" data-i18n="hero_sub">
-          Experience Dubai’s premier supercar collection. Every vehicle undergoes a 16-panel SHA-256 pre-lease inspection with guaranteed escrow deposit release.
-        </p>
-        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-          <button class="btn-gold" onclick="openBookingModal()" data-i18n="book_lease">Reserve Supercar</button>
-          
-          <!-- Strict WhatsApp Button: ONLY ICON, NO TEXT -->
-          <a href="https://wa.me/971508379080" target="_blank" rel="noopener" class="whatsapp-icon-btn" aria-label="WhatsApp">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.579 1.831.848 2.791.848 3.18 0 5.767-2.587 5.768-5.766.001-3.182-2.585-5.768-5.768-5.768zm7.391 5.765c-.002 4.08-3.315 7.394-7.391 7.394-1.246 0-2.433-.323-3.486-.927l-4.145 1.087 1.107-4.043c-.682-1.096-1.047-2.364-1.048-3.511.002-4.08 3.316-7.394 7.392-7.394 4.076 0 7.39 3.315 7.392 7.394z"/></svg>
-          </a>
-        </div>
+    <!-- Top Mode & Preset Selection Bar -->
+    <section class="toolbar-card">
+      <div class="toolbar-group">
+        <span class="toolbar-title">REFERENCE PATTERNS:</span>
+        <button class="preset-pill active" onclick="loadInspectionPreset('carbon')" id="preset-carbon-btn">
+          🔬 Carbon Fiber Weave (0.28mm Fissure)
+        </button>
+        <button class="preset-pill" onclick="loadInspectionPreset('horology')" id="preset-horology-btn">
+          ⌚ Sapphire Crystal (Micro-Scuff)
+        </button>
+        <button class="preset-pill" onclick="loadInspectionPreset('identical')" id="preset-identical-btn">
+          🛡️ Zero-Delta Control (100% Identical)
+        </button>
       </div>
 
-      <div class="bento-card" style="grid-column: span 5; padding: 0; overflow: hidden; position: relative; min-height: 440px;">
-        <img src="assets/supercar_hero.jpg" alt="Supercar Showroom Dubai" style="width: 100%; height: 100%; object-fit: cover;">
-        <div style="position: absolute; bottom: 1.5rem; left: 1.5rem; right: 1.5rem; background: rgba(255, 253, 248, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border-gold); border-radius: 1.25rem; padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Location</div>
-            <div style="font-weight: 600; font-size: 0.95rem; color: var(--text-main);">Business Bay &amp; DIFC, Dubai</div>
+      <div class="toolbar-group">
+        <span class="toolbar-title">VIEWPORT MODE:</span>
+        <button class="view-pill active" onclick="setVisualizerMode('heatmap')" id="vm-heatmap-btn">
+          🔮 Neon Heatmap
+        </button>
+        <button class="view-pill" onclick="setVisualizerMode('slider')" id="vm-slider-btn">
+          🔲 Split-Sweep Slider
+        </button>
+        <button class="view-pill" onclick="setVisualizerMode('loupe')" id="vm-loupe-btn">
+          🔎 8X Digital Microscope
+        </button>
+        <button class="view-pill" onclick="setVisualizerMode('ghost')" id="vm-ghost-btn">
+          👻 Ghost Strobe
+        </button>
+      </div>
+    </section>
+
+    <!-- Interactive Optical Inspection Stage -->
+    <section class="stage-section">
+      <div id="optical-stage" class="optical-stage-box">
+        
+        <!-- Background Layer: Reference Frame (Pattern A) -->
+        <img id="stage-img-a" src="assets/carbon_pristine.jpg" alt="Baseline Reference" class="stage-layer">
+
+        <!-- Live Camera Stream Layer (Active when camera is ON) -->
+        <video id="stage-camera-feed" autoplay playsinline muted class="stage-layer" style="display: none; object-fit: cover;"></video>
+
+        <!-- Inspection Target Layer (Pattern B) -->
+        <img id="stage-img-b" src="assets/carbon_microcrack.jpg" alt="Inspection Target" class="stage-layer" style="opacity: 0;">
+
+        <!-- Computed Neon Differential Canvas -->
+        <canvas id="stage-diff-canvas" class="stage-layer diff-canvas"></canvas>
+
+        <!-- Ghost Overlay Alignment Layer -->
+        <div id="stage-ghost-layer" class="stage-layer ghost-overlay" style="display: none;">
+          <img id="stage-ghost-img" src="assets/carbon_microcrack.jpg" alt="Ghost">
+        </div>
+
+        <!-- Split-Sweep Wipe Divider -->
+        <div id="stage-slider-divider" class="slider-divider" style="display: none;">
+          <div class="slider-handle">
+            <span>&harr;</span>
           </div>
-          <span style="font-size: 0.85rem; font-weight: 600; color: var(--accent-gold);">Same-Day VIP Delivery</span>
+        </div>
+
+        <!-- 8X Floating Digital Microscope Loupe -->
+        <div id="stage-loupe-lens" class="loupe-lens" style="display: none;">
+          <canvas id="loupe-canvas" width="160" height="160"></canvas>
+          <div class="loupe-reticle"></div>
+          <div class="loupe-tag">800% SUB-PIXEL</div>
+        </div>
+
+        <!-- Collimation HUD Reticle Grid (Always Active) -->
+        <div class="hud-reticle-overlay">
+          <div class="hud-corner top-left"></div>
+          <div class="hud-corner top-right"></div>
+          <div class="hud-corner bottom-left"></div>
+          <div class="hud-corner bottom-right"></div>
+          <div class="hud-crosshair-center"></div>
+          <div class="hud-radar-sweep"></div>
+          <div class="hud-axis-x"></div>
+          <div class="hud-axis-y"></div>
+          <div class="hud-scale-ruler">
+            <span>0 mm</span>
+            <span>2.5 mm</span>
+            <span>5.0 mm</span>
+            <span>7.5 mm</span>
+            <span>10.0 mm</span>
+          </div>
+        </div>
+
+        <!-- Live Stage Telemetry Watermark -->
+        <div class="stage-watermark">
+          <span class="watermark-dot"></span>
+          <span id="stage-resolution-tag">600 &times; 450 px &bull; 60 FPS Optical Engine</span>
+        </div>
+
+        <!-- Real-Time Delta Legend -->
+        <div class="diff-legend">
+          <div class="legend-item"><span class="legend-dot pristine"></span> Identical</div>
+          <div class="legend-item"><span class="legend-dot micro"></span> Sub-Visual Delta (&lt;0.3mm)</div>
+          <div class="legend-item"><span class="legend-dot critical"></span> Structural Fracture</div>
         </div>
       </div>
     </section>
 
-    <!-- ========================================================
-         OMNIDIFF AI — SUB-PIXEL DIFFERENTIAL OPTICAL SUITE
-         Detection of Microscopic Discrepancies Imperceptible to the Human Eye
-         ======================================================== -->
-    <section id="omnidiff-section" class="bento-card" style="margin-bottom: 4rem; border-color: var(--accent-gold); box-shadow: 0 15px 45px rgba(203, 178, 121, 0.15);">
-      
-      <!-- OmniDiff Header -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
-        <div>
-          <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-gold-soft); border: 1px solid var(--border-gold); color: var(--accent-gold); padding: 0.3rem 0.85rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.6rem;">
-            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00F0FF; box-shadow: 0 0 8px #00F0FF;"></span>
-            <span>OmniDiff AI &bull; Sub-Pixel Forensic Metrology (0.1 mm Optical Delta)</span>
-          </div>
-          <h2 class="font-display" style="font-size: 2.4rem; color: var(--text-main); margin-bottom: 0.35rem;">
-            Sub-Visual Difference Recognition Engine
-          </h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 720px; line-height: 1.6;">
-            Detects hairline structural fractures, microscopic clearcoat thinning, and sub-millimeter defects <strong>completely invisible to the unassisted human eye</strong>. Combines high-pass false-color thermography with Groq Vision AI semantic metrology.
-          </p>
-        </div>
-
-        <!-- Asset Category Pills -->
-        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-          <button class="asset-tab-btn active" onclick="switchAssetMode('carbon')" id="tab-carbon-btn">
-            🏎️ Carbon Fiber (0.3mm Fissure)
-          </button>
-          <button class="asset-tab-btn" onclick="switchAssetMode('horology')" id="tab-horology-btn">
-            ⌚ Luxury Watch (Sapphire Scuff)
-          </button>
-          <button class="asset-tab-btn" onclick="switchAssetMode('universal')" id="tab-universal-btn">
-            🔬 Universal Object / Camera
-          </button>
-        </div>
-      </div>
-
-      <!-- Presets & Interactive Viewer Toolbar -->
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: var(--bg-primary); padding: 0.85rem 1.25rem; border-radius: 1rem; margin-bottom: 1.5rem; border: 1px solid var(--border-subtle);">
-        
-        <!-- View Mode Selectors -->
-        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-          <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">View Mode:</span>
-          <button class="view-mode-btn active" onclick="setViewMode('heatmap')" id="vm-heatmap-btn">
-            🔮 Neon Heatmap (Invisible Delta)
-          </button>
-          <button class="view-mode-btn" onclick="setViewMode('slider')" id="vm-slider-btn">
-            🔲 Split-Sweep Slider
-          </button>
-          <button class="view-mode-btn" onclick="setViewMode('loupe')" id="vm-loupe-btn">
-            🔬 8X Digital Loupe
-          </button>
-          <button class="view-mode-btn" onclick="setViewMode('ghost')" id="vm-ghost-btn">
-            👻 Ghost-Overlay Strobe
-          </button>
-        </div>
-
-        <!-- Metric Indicator -->
-        <div style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 600;">
-          <span style="color: var(--text-muted);">Optical Discrepancy Index:</span>
-          <span id="delta-metric-pill" style="background: rgba(255, 0, 85, 0.15); color: #FF0055; padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid rgba(255, 0, 85, 0.3);">
-            Delta: +1.42% (Sub-Visual Anomaly)
-          </span>
-        </div>
-      </div>
-
-      <!-- Interactive Main Visualizer Stage -->
-      <div id="diff-stage-container" style="position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 480px; background: #0A1118; border-radius: 1.25rem; overflow: hidden; border: 1px solid var(--border-gold); margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: crosshair;">
-        
-        <!-- Image A (Baseline) -->
-        <img id="stage-img-a" src="assets/carbon_pristine.jpg" alt="Baseline Pattern" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
-
-        <!-- Image B (Inspection / Altered) -->
-        <img id="stage-img-b" src="assets/carbon_microcrack.jpg" alt="Inspection Object" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0;">
-
-        <!-- Computed Heatmap Layer (Neon False-Color) -->
-        <canvas id="stage-heatmap-canvas" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 5; pointer-events: none; mix-blend-mode: screen;"></canvas>
-
-        <!-- Ghost Overlay Layer -->
-        <div id="stage-ghost-layer" style="display: none; position: absolute; inset: 0; z-index: 8; pointer-events: none; opacity: 0.5;">
-          <img id="stage-ghost-img" src="assets/carbon_pristine.jpg" style="width: 100%; height: 100%; object-fit: cover; filter: invert(0.2) hue-rotate(180deg);">
-        </div>
-
-        <!-- Split Slider Line & Handle -->
-        <div id="stage-split-divider" style="display: none; position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: #FFFDF8; box-shadow: 0 0 10px rgba(255,255,255,0.8); z-index: 15; pointer-events: none;">
-          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 36px; height: 36px; border-radius: 50%; background: var(--accent-gold); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
-            &harr;
-          </div>
-        </div>
-
-        <!-- 8X Magnifier Loupe Floating Window -->
-        <div id="stage-loupe-lens" style="display: none; position: absolute; width: 140px; height: 140px; border-radius: 50%; border: 3px solid #00F0FF; box-shadow: 0 0 25px rgba(0,240,255,0.5); overflow: hidden; pointer-events: none; z-index: 25; background: #000;">
-          <canvas id="loupe-canvas" width="140" height="140"></canvas>
-          <span style="position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 0.65rem; font-weight: 800; color: #00F0FF; background: rgba(0,0,0,0.75); padding: 0.1rem 0.4rem; border-radius: 4px;">
-            800% ZOOM
-          </span>
-        </div>
-
-        <!-- HUD Corner Markers -->
-        <span class="hud-corner tl"></span>
-        <span class="hud-corner tr"></span>
-        <span class="hud-corner bl"></span>
-        <span class="hud-corner br"></span>
-
-        <!-- Floating Live Heatmap Legend -->
-        <div style="position: absolute; bottom: 12px; right: 16px; background: rgba(9, 16, 13, 0.85); backdrop-filter: blur(8px); padding: 0.35rem 0.75rem; border-radius: 9999px; border: 1px solid var(--border-gold); z-index: 12; display: flex; align-items: center; gap: 0.5rem; font-size: 0.7rem; color: #FFFDF8;">
-          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #0A1118; border: 1px solid #FFF;"></span> Pristine
-          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #00F0FF;"></span> Micro-Delta
-          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #FF0055;"></span> Structural Fissure
-        </div>
-      </div>
-
-      <!-- Live Dual Slot Controls (Upload or Camera for Any Custom Asset) -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-        <div style="background: var(--bg-primary); padding: 0.85rem 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+    <!-- Dual Slot Control & Capture Engine -->
+    <section class="slots-section">
+      <div class="slot-card">
+        <div class="slot-header">
           <div>
-            <div style="font-size: 0.75rem; font-weight: 700; color: var(--accent-gold);">PATTERN A (Baseline)</div>
-            <div id="slot-a-label" style="font-size: 0.85rem; color: var(--text-main); font-weight: 600;">Carbon Fiber Weave OEM</div>
+            <span class="slot-badge">REFERENCE FRAME A</span>
+            <h3 id="slot-a-name" class="slot-title">Baseline Master (Pristine Condition)</h3>
           </div>
-          <label class="btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; cursor: pointer;">
-            Upload A
-            <input type="file" accept="image/*" onchange="handleOmniUpload(event, 'A')" style="display: none;">
-          </label>
+          <span id="slot-a-hash" class="slot-hash">SHA-256: 7a82...d19e</span>
         </div>
-
-        <div style="background: var(--bg-primary); padding: 0.85rem 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <div style="font-size: 0.75rem; font-weight: 700; color: var(--accent-gold);">PATTERN B (Inspection)</div>
-            <div id="slot-b-label" style="font-size: 0.85rem; color: var(--text-main); font-weight: 600;">Post-Return Condition</div>
-          </div>
-          <label class="btn-outline" style="font-size: 0.75rem; padding: 0.35rem 0.75rem; cursor: pointer;">
-            Upload B / Camera
-            <input type="file" accept="image/*" onchange="handleOmniUpload(event, 'B')" style="display: none;">
+        <p class="slot-desc">Frozen master pattern used as mathematical ground truth for optical subtraction.</p>
+        <div class="slot-actions">
+          <button class="btn-slot" onclick="freezeMasterFrameFromCamera()">
+            📸 Freeze Current Camera Frame
+          </button>
+          <label class="btn-slot-outline">
+            📁 Upload Master File
+            <input type="file" accept="image/*" onchange="handleManualSlotUpload(event, 'A')" style="display: none;">
           </label>
         </div>
       </div>
 
-      <!-- Trigger Button: Run Sub-Pixel Forensics -->
-      <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-        <button id="run-omnidiff-btn" class="btn-gold" onclick="runOmniDiffAnalysis()" style="font-size: 1rem; padding: 0.9rem 2.5rem; box-shadow: 0 10px 25px rgba(203, 178, 121, 0.35);">
-          ⚡ Run Groq Sub-Pixel Forensic Appraisal
+      <div class="slot-card">
+        <div class="slot-header">
+          <div>
+            <span class="slot-badge">INSPECTION FRAME B</span>
+            <h3 id="slot-b-name" class="slot-title">Live Inspection Target</h3>
+          </div>
+          <span id="slot-b-hash" class="slot-hash">SHA-256: c401...88b2</span>
+        </div>
+        <p class="slot-desc">Current surface under forensic examination (live streaming from camera or uploaded).</p>
+        <div class="slot-actions">
+          <button class="btn-slot" onclick="captureInspectionFrameFromCamera()">
+            📸 Snapshot Camera for Peritaje
+          </button>
+          <label class="btn-slot-outline">
+            📁 Upload Inspection File
+            <input type="file" accept="image/*" onchange="handleManualSlotUpload(event, 'B')" style="display: none;">
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrology Telemetry & AI Appraisal Trigger -->
+    <section class="metrics-section">
+      <div class="metric-card">
+        <div class="metric-label">Optical Discrepancy Index (ODI)</div>
+        <div id="odi-metric-value" class="metric-value warn">+1.42%</div>
+        <div class="metric-sub">Calculated via High-Pass Luminance Delta</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Affected Sub-Pixel Count</div>
+        <div id="pixel-count-metric" class="metric-value">3,842 px</div>
+        <div class="metric-sub">Active Anomaly Cluster</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Estimated Physical Thickness</div>
+        <div id="thickness-metric" class="metric-value">0.28 mm</div>
+        <div class="metric-sub">Below Human Visual Acuity Threshold</div>
+      </div>
+
+      <div class="metric-card action-card">
+        <button id="run-ai-appraisal-btn" class="btn-appraisal" onclick="executeGroqOpticalAppraisal()">
+          ⚡ Run Groq Vision Metrology Appraisal
         </button>
       </div>
-
-      <!-- Metrology Verdict Dossier -->
-      <div id="omnidiff-verdict-box" style="background: var(--bg-primary); border: 1px solid var(--border-gold); border-radius: 1.25rem; padding: 2rem;">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
-          <div>
-            <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Sub-Visual Metrology Appraisal</span>
-            <h3 id="omni-verdict-title" class="font-display" style="font-size: 1.85rem; color: var(--text-main);">
-              Microscopic Anomaly Detected: Hairline Fissure
-            </h3>
-          </div>
-          <span id="omni-severity-badge" style="background: rgba(255, 0, 85, 0.15); color: #FF0055; border: 1px solid #FF0055; padding: 0.35rem 0.85rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
-            MICRO_MINOR DEFECT (0.28 mm)
-          </span>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Estimated Physical Size</div>
-            <div id="omni-dimension-val" style="font-size: 1.3rem; font-weight: 700; color: var(--text-main); margin-top: 0.2rem;">0.28 mm &times; 3.6 mm</div>
-          </div>
-          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Optical Confidence</div>
-            <div id="omni-confidence-val" style="font-size: 1.3rem; font-weight: 700; color: var(--accent-gold); margin-top: 0.2rem;">98.4% Sub-Pixel</div>
-          </div>
-          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Affected Coordinate Zone</div>
-            <div id="omni-coords-val" style="font-size: 1.3rem; font-weight: 700; color: var(--text-main); margin-top: 0.2rem;">Perimeter Weave (x:384, y:212)</div>
-          </div>
-        </div>
-
-        <!-- Human Invisibility Callout Alert -->
-        <div style="background: rgba(122, 90, 30, 0.08); border-left: 4px solid var(--accent-gold); padding: 1rem 1.25rem; border-radius: 0.5rem; margin-bottom: 1.5rem;">
-          <div style="font-size: 0.8rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 0.25rem;">
-            👁️ Por qué es indetectable al ojo humano (Human Invisibility Rationale):
-          </div>
-          <p id="omni-invisibility-reason" style="font-size: 0.88rem; color: var(--text-main); line-height: 1.6;">
-            La micro-fisura tiene un ancho inferior al umbral de agudeza visual humana a distancia ordinaria (0.28 mm). Su orientación corre paralela a la trama de carbono, mimetizándose con las sombras naturales del tejido y los reflejos especulares de la resina epoxi.
-          </p>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
-          <div style="font-family: monospace; font-size: 0.75rem; color: var(--text-muted);">
-            Merkle Proof: <span id="omni-proof-hash" style="color: var(--accent-gold);">7b91a...c82d</span>
-          </div>
-          <button class="btn-outline" onclick="downloadOmniDiffReport()" style="font-size: 0.8rem; padding: 0.45rem 1rem;">
-            Download Sub-Visual Appraisal Dossier
-          </button>
-        </div>
-      </div>
-
     </section>
 
-    <!-- Fleet Grid Section -->
-    <section style="margin-bottom: 4rem;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <!-- Certified Metrology Appraisal Dossier Console -->
+    <section id="appraisal-dossier-card" class="dossier-card">
+      <div class="dossier-header">
         <div>
-          <div style="font-size: 0.85rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">The 2026 Collection</div>
-          <h2 class="font-display" style="font-size: 2.6rem; color: var(--text-main);">Exotic Fleet</h2>
-        </div>
-        <div id="category-filters" style="display: flex; gap: 0.5rem; overflow-x: auto;"></div>
-      </div>
-
-      <div id="fleet-grid" class="bento-grid"></div>
-    </section>
-
-    <!-- ========================================================
-         GROQ VISION AI — 16-PANEL INSPECTION & ESCROW STATION
-         HUD Framing Reticle • Pre/Post Slots • Forensic Appraisal
-         ======================================================== -->
-    <section class="bento-card" style="margin-bottom: 4rem; border-color: var(--border-gold); background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(203, 178, 121, 0.05) 100%);">
-      
-      <!-- Station Header -->
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
-        <div>
-          <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: var(--accent-gold-soft); border: 1px solid var(--border-gold); color: var(--accent-gold); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem;">
-            <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #25D366;"></span>
-            Groq Vision AI Engine (qwen/qwen3.8-27b &bull; 0.17s)
-          </div>
-          <h2 class="font-display" style="font-size: 2.2rem; color: var(--text-main); margin-bottom: 0.35rem;">
-            Forensic Vehicle Inspection &amp; Escrow Release
+          <span class="dossier-badge">OFFICIAL CRYPTOGRAPHIC APPRAISAL</span>
+          <h2 id="dossier-title" class="font-display dossier-title">
+            Microscopic Anomaly Detected: Hairline Structural Fissure
           </h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 680px;">
-            Enforces strict camera HUD reticle alignment before accepting photos. Compares pre-lease departure against post-lease return frames to eliminate deposit disputes with mathematical certainty.
-          </p>
         </div>
-
-        <!-- Panel Selector Dropdown -->
-        <div style="background: var(--bg-primary); padding: 0.75rem 1rem; border-radius: 1rem; border: 1px solid var(--border-subtle);">
-          <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem; font-weight: 600;">Target Inspection Panel:</label>
-          <select id="inspection-panel-select" onchange="handlePanelSelectChange()" style="padding: 0.45rem 0.8rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main); font-size: 0.85rem; font-weight: 600;">
-            <option value="rim_front_left">Rim &amp; Tire (Front Left - 20" Forged)</option>
-            <option value="front_bumper">Front Bumper &amp; Carbon Splitter</option>
-            <option value="hood">Hood &amp; Frunk Panel</option>
-            <option value="driver_door">Driver Door &amp; Side Intake</option>
-            <option value="rear_diffuser">Rear Diffuser &amp; Titanium Exhaust</option>
-          </select>
+        <div id="dossier-severity-badge" class="severity-badge critical">
+          MICRO_MINOR ANOMALY (0.28 mm)
         </div>
       </div>
 
-      <!-- One-Click Preset Demo Scenarios (For Live Pitching) -->
-      <div style="margin-bottom: 2rem; background: var(--bg-primary); padding: 1rem 1.25rem; border-radius: 1rem; border: 1px solid var(--border-subtle);">
-        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
-          <span>⚡ Live Demonstration Presets (1-Click Test):</span>
+      <div class="dossier-grid">
+        <div class="dossier-cell">
+          <span class="cell-label">Defect Classification</span>
+          <div id="dossier-defect-type" class="cell-val">HAIRLINE_FISSURE</div>
         </div>
-        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
-          <button class="scenario-pill active" onclick="loadDemoScenario('clean')" id="scenario-clean-btn">
-            🟢 Scenario 1: Clean Return (Pristine - 100% Escrow Released)
-          </button>
-          <button class="scenario-pill" onclick="loadDemoScenario('damaged')" id="scenario-damaged-btn">
-            🔴 Scenario 2: Curb Rash Damage (450 AED Deductible Applied)
-          </button>
-          <button class="scenario-pill" onclick="loadDemoScenario('misaligned')" id="scenario-misaligned-btn">
-            ⚠️ Scenario 3: Bad Framing / Photo Rejected by Groq
-          </button>
+        <div class="dossier-cell">
+          <span class="cell-label">Estimated Dimensions</span>
+          <div id="dossier-dimensions" class="cell-val">0.28 mm &times; 3.6 mm (12 &mu;m depth)</div>
+        </div>
+        <div class="dossier-cell">
+          <span class="cell-label">Optical Confidence Score</span>
+          <div id="dossier-confidence" class="cell-val gold">98.4% Sub-Pixel</div>
+        </div>
+        <div class="dossier-cell">
+          <span class="cell-label">Affected Coordinates</span>
+          <div id="dossier-coords" class="cell-val">Upper-Right Quad (X: 384, Y: 212)</div>
         </div>
       </div>
 
-      <!-- Dual-Slot HUD Viewfinder Grid -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-        
-        <!-- SLOT 1: PRE-LEASE (Salida / Departure) -->
-        <div style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1.25rem; border: 1px solid var(--border-subtle); display: flex; flex-direction: column;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-            <div>
-              <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Slot 1: Pre-Lease</span>
-              <h4 style="font-size: 1.1rem; color: var(--text-main);">Departure Baseline</h4>
-            </div>
-            <span id="pre-frame-badge" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 9999px; font-weight: 600; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-subtle);">
-              Awaiting Frame
-            </span>
-          </div>
-
-          <!-- Viewfinder HUD 1 -->
-          <div id="pre-viewfinder" class="hud-viewfinder">
-            <span class="hud-corner tl"></span>
-            <span class="hud-corner tr"></span>
-            <span class="hud-corner bl"></span>
-            <span class="hud-corner br"></span>
-            <div class="hud-crosshair"></div>
-            <div class="hud-scanner"></div>
-            <span class="hud-target-label" id="pre-target-label">ALIGN PANEL IN RETICLE</span>
-            <img id="pre-preview-img" src="assets/supercar_hero.jpg" alt="Pre-Lease Capture">
-          </div>
-
-          <!-- Framing Rejection / Approval Banner 1 -->
-          <div id="pre-status-msg" style="margin-top: 0.75rem; font-size: 0.8rem; padding: 0.6rem 0.85rem; border-radius: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); min-height: 48px; display: flex; align-items: center;">
-            <span style="color: var(--text-muted);">Frame calibrated. Upload photo or use preset.</span>
-          </div>
-
-          <!-- Controls 1 -->
-          <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
-            <label class="btn-outline" style="flex: 1; font-size: 0.8rem; padding: 0.45rem 0.8rem; cursor: pointer; text-align: center;">
-              📸 Capture / Upload
-              <input type="file" accept="image/*" onchange="handlePreImageUpload(event)" style="display: none;">
-            </label>
-            <span id="pre-hash-tag" style="font-family: monospace; font-size: 0.7rem; color: var(--text-muted);">SHA-256: Ready</span>
-          </div>
+      <!-- Human Invisibility Scientific Rationale -->
+      <div class="invisibility-banner">
+        <div class="invisibility-title">
+          👁️ Por qué es imposible de detectar al ojo humano (Human Invisibility Rationale):
         </div>
-
-        <!-- SLOT 2: POST-LEASE (Entrega / Return) -->
-        <div style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1.25rem; border: 1px solid var(--border-subtle); display: flex; flex-direction: column;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-            <div>
-              <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Slot 2: Post-Lease</span>
-              <h4 style="font-size: 1.1rem; color: var(--text-main);">Return Condition</h4>
-            </div>
-            <span id="post-frame-badge" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 9999px; font-weight: 600; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-subtle);">
-              Awaiting Frame
-            </span>
-          </div>
-
-          <!-- Viewfinder HUD 2 -->
-          <div id="post-viewfinder" class="hud-viewfinder">
-            <span class="hud-corner tl"></span>
-            <span class="hud-corner tr"></span>
-            <span class="hud-corner bl"></span>
-            <span class="hud-corner br"></span>
-            <div class="hud-crosshair"></div>
-            <div class="hud-scanner"></div>
-            <span class="hud-target-label" id="post-target-label">ALIGN PANEL IN RETICLE</span>
-            <img id="post-preview-img" src="assets/supercar_hero.jpg" alt="Post-Lease Capture">
-          </div>
-
-          <!-- Framing Rejection / Approval Banner 2 -->
-          <div id="post-status-msg" style="margin-top: 0.75rem; font-size: 0.8rem; padding: 0.6rem 0.85rem; border-radius: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); min-height: 48px; display: flex; align-items: center;">
-            <span style="color: var(--text-muted);">Frame calibrated. Upload photo or use preset.</span>
-          </div>
-
-          <!-- Controls 2 -->
-          <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
-            <label class="btn-outline" style="flex: 1; font-size: 0.8rem; padding: 0.45rem 0.8rem; cursor: pointer; text-align: center;">
-              📸 Capture / Upload
-              <input type="file" accept="image/*" onchange="handlePostImageUpload(event)" style="display: none;">
-            </label>
-            <span id="post-hash-tag" style="font-family: monospace; font-size: 0.7rem; color: var(--text-muted);">SHA-256: Ready</span>
-          </div>
-        </div>
-
+        <p id="dossier-rationale" class="invisibility-text">
+          La micro-fisura tiene un ancho inferior al umbral de agudeza visual humana a distancia estándar (0.28 mm). Su orientación corre paralela a la trama de carbono, mimetizándose con las sombras naturales del tejido y los reflejos especulares de la resina epoxi.
+        </p>
       </div>
 
-      <!-- Main Action: Run AI Forensic Analysis & Settle Escrow -->
-      <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
-        <button id="run-forensics-btn" class="btn-gold" onclick="executeAIForensicInspection()" style="font-size: 1rem; padding: 0.9rem 2.5rem; box-shadow: 0 10px 25px rgba(203, 178, 121, 0.35);">
-          ⚡ Run Groq AI Forensic Appraisal &amp; Settle Escrow
+      <!-- Footer & JSON Export -->
+      <div class="dossier-footer">
+        <div class="hash-proof">
+          Merkle Audit Proof: <span id="dossier-proof-hash">7b91a84f...c82d4109</span>
+        </div>
+        <button class="btn-slot-outline" onclick="exportDossierJSON()">
+          📥 Export Certified Appraisal Dossier (JSON)
         </button>
       </div>
-
-      <!-- Escrow Settlement & Damage Verdict Console -->
-      <div id="verdict-console" style="display: none; background: var(--bg-primary); border: 1px solid var(--border-gold); border-radius: 1.25rem; padding: 2rem;">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
-          <div>
-            <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Official Appraisal Dossier</span>
-            <h3 id="verdict-title" class="font-display" style="font-size: 1.8rem; color: var(--text-main);">
-              Inspection Verdict: Calculating...
-            </h3>
-          </div>
-          <div id="verdict-status-pill" style="padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
-            PRISTINE
-          </div>
-        </div>
-
-        <p id="verdict-description" style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
-          Evaluating surface differentials...
-        </p>
-
-        <!-- Financial Escrow Settlement Ledger -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Initial Locked Escrow</div>
-            <div style="font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin-top: 0.25rem;">8,000 AED</div>
-          </div>
-          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Approved Damage Deductible</div>
-            <div id="verdict-deductible" style="font-size: 1.6rem; font-weight: 700; color: #D93025; margin-top: 0.25rem;">0 AED</div>
-          </div>
-          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Immediate Escrow Release</div>
-            <div id="verdict-refund" style="font-size: 1.6rem; font-weight: 700; color: #25D366; margin-top: 0.25rem;">8,000 AED</div>
-          </div>
-        </div>
-
-        <!-- Cryptographic Proof Footer -->
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
-          <div style="font-family: monospace; font-size: 0.75rem; color: var(--text-muted); word-break: break-all; max-width: 600px;">
-            Proof Hash: <span id="verdict-proof-hash" style="color: var(--accent-gold);">---</span>
-          </div>
-          <button class="btn-outline" onclick="downloadAppraisalDossier()" style="font-size: 0.8rem; padding: 0.45rem 1rem;">
-            Download Certified Appraisal Dossier
-          </button>
-        </div>
-      </div>
-
     </section>
 
   </main>
 
-  <!-- Footer -->
-  <footer style="background: var(--bg-surface); border-top: 1px solid var(--border-subtle); padding: 3rem 2rem; margin-top: 3rem;">
-    <div style="max-width: 1300px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
-      <div>
-        <div class="font-display" style="font-size: 1.4rem; color: var(--text-main);">APEXFLEET DUBAI</div>
-        <div style="font-size: 0.85rem; color: var(--text-muted);">The Opus by Omniyat, Business Bay, Dubai, UAE</div>
+  <!-- Clean Footer -->
+  <footer class="hud-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="font-display">OMNIDIFF AI PROTOCOL</span>
+        <span class="footer-sep">&bull;</span>
+        <span>Hardware-Accelerated Optical Differential Metrology</span>
       </div>
-      <!-- Subtle developed by signature -->
-      <div style="font-size: 0.85rem; color: var(--text-muted);">
-        Developed by <strong style="color: var(--accent-gold);">Tecnoemprende</strong>
+      <div class="footer-credits">
+        Developed by <strong>Tecnoemprende</strong>
       </div>
     </div>
   </footer>
 
-  <!-- Floating WhatsApp: Strict Icon ONLY -->
-  <a href="https://wa.me/971508379080" target="_blank" rel="noopener" class="whatsapp-fab" aria-label="WhatsApp">
-    <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.579 1.831.848 2.791.848 3.18 0 5.767-2.587 5.768-5.766.001-3.182-2.585-5.768-5.768-5.768zm7.391 5.765c-.002 4.08-3.315 7.394-7.391 7.394-1.246 0-2.433-.323-3.486-.927l-4.145 1.087 1.107-4.043c-.682-1.096-1.047-2.364-1.048-3.511.002-4.08 3.316-7.394 7.392-7.394 4.076 0 7.39 3.315 7.392 7.394z"/></svg>
-  </a>
-
-  <!-- Admin Modal (5 Tabs) -->
-  <div id="admin-modal" class="admin-modal-backdrop" onclick="handleBackdropClick(event)">
-    <div class="admin-drawer">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <div>
-          <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Tierra Querida Engine</span>
-          <h3 class="font-display" style="font-size: 1.7rem; color: var(--text-main);">ApexFleet Manager</h3>
-        </div>
-        <button onclick="closeAdminModal()" style="background: none; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer;">&times;</button>
-      </div>
-
-      <div class="tab-nav">
-        <button class="tab-btn active" onclick="switchAdminTab('tab-fleet')" data-tab="tab-fleet">1. Fleet Inventory</button>
-        <button class="tab-btn" onclick="switchAdminTab('tab-announcements')" data-tab="tab-announcements">2. Announcements</button>
-        <button class="tab-btn" onclick="switchAdminTab('tab-categories')" data-tab="tab-categories">3. Categories</button>
-        <button class="tab-btn" onclick="switchAdminTab('tab-leases')" data-tab="tab-leases">4. Active Leases &amp; Escrow</button>
-        <button class="tab-btn" onclick="switchAdminTab('tab-settings')" data-tab="tab-settings">5. Supabase &amp; Backup</button>
-      </div>
-
-      <!-- Tab 1: Fleet Inventory -->
-      <div id="tab-fleet" class="tab-content" style="display: block;">
-        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Manage Fleet Vehicles</h4>
-        <form id="car-form" onsubmit="handleSaveCar(event)" style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1rem; margin-bottom: 1.5rem;">
-          <input type="hidden" id="car-id" value="">
-          <div style="margin-bottom: 0.85rem;">
-            <label style="font-size: 0.8rem; color: var(--text-muted);">Vehicle Model</label>
-            <input type="text" id="car-name" required style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);">
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.85rem;">
-            <div>
-              <label style="font-size: 0.8rem; color: var(--text-muted);">Daily Rate (AED)</label>
-              <input type="number" id="car-price" required style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);">
-            </div>
-            <div>
-              <label style="font-size: 0.8rem; color: var(--text-muted);">Category</label>
-              <select id="car-category" style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);"></select>
-            </div>
-          </div>
-          <div style="margin-bottom: 1rem;">
-            <label style="font-size: 0.8rem; color: var(--text-muted);">Vehicle Photo (Canvas Auto-Compressed &le; 800px)</label>
-            <input type="file" accept="image/*" onchange="handleImageCompress(event)" style="font-size: 0.8rem; color: var(--text-main);">
-            <div id="compression-preview" style="margin-top: 0.5rem; display: none;">
-              <img id="compressed-image-preview" src="" style="width: 80px; height: 80px; object-fit: cover; border-radius: 0.5rem;">
-              <span id="compression-stats" style="font-size: 0.75rem; color: var(--text-muted); margin-left: 0.5rem;"></span>
-            </div>
-          </div>
-          <button type="submit" class="btn-gold" style="font-size: 0.85rem;">Save Vehicle</button>
-        </form>
-        <div id="admin-fleet-list"></div>
-      </div>
-
-      <!-- Tab 2: Announcements -->
-      <div id="tab-announcements" class="tab-content" style="display: none;">
-        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Edit Top Announcement</h4>
-        <textarea id="edit-announcement" rows="3" style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main); margin-bottom: 1rem;"></textarea>
-        <button class="btn-gold" onclick="saveAnnouncement()">Update Banner</button>
-      </div>
-
-      <!-- Tab 3: Categories -->
-      <div id="tab-categories" class="tab-content" style="display: none;">
-        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Categories</h4>
-        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-          <input type="text" id="new-cat-input" placeholder="e.g. Hypercars" style="flex: 1; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main);">
-          <button class="btn-gold" onclick="addCategory()">Add</button>
-        </div>
-        <div id="admin-cat-list"></div>
-      </div>
-
-      <!-- Tab 4: Leases & Escrow -->
-      <div id="tab-leases" class="tab-content" style="display: none;">
-        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Active Leases &amp; Escrow Ledger</h4>
-        <div id="admin-leases-list"></div>
-      </div>
-
-      <!-- Tab 5: Supabase & Backup -->
-      <div id="tab-settings" class="tab-content" style="display: none;">
-        <h4 style="margin-bottom: 1rem; color: var(--text-main);">Dual-Layer &amp; JSON Backup</h4>
-        <div style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1rem; margin-bottom: 1rem;">
-          <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-main);">Supabase Connection</div>
-          <span style="font-size: 0.75rem; color: #137333; font-weight: 600;">Connected (jyrqzjctkmzdvmraqrcv)</span>
-        </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn-gold" onclick="exportBackupJSON()" style="font-size: 0.85rem;">Export JSON</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Booking Modal -->
-  <div id="booking-modal" class="admin-modal-backdrop" onclick="handleBookingBackdrop(event)">
-    <div style="background: var(--bg-surface); max-width: 460px; width: 90%; border-radius: 1.5rem; padding: 2rem; border: 1px solid var(--border-gold); margin: auto;">
-      <h3 class="font-display" style="font-size: 1.8rem; color: var(--text-main); margin-bottom: 0.5rem;">Reserve Supercar</h3>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">Immediate VIP reservation with escrow protection.</p>
-      <form onsubmit="handleCustomerBooking(event)">
-        <div style="margin-bottom: 0.85rem;">
-          <label style="font-size: 0.8rem; color: var(--text-muted);">Full Name</label>
-          <input type="text" id="cust-name" required style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-primary); color: var(--text-main);">
-        </div>
-        <div style="margin-bottom: 0.85rem;">
-          <label style="font-size: 0.8rem; color: var(--text-muted);">WhatsApp Number</label>
-          <input type="tel" id="cust-phone" required value="+971 " style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-primary); color: var(--text-main);">
-        </div>
-        <div style="margin-bottom: 1.25rem;">
-          <label style="font-size: 0.8rem; color: var(--text-muted);">Selected Supercar</label>
-          <select id="cust-car" style="width: 100%; padding: 0.65rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-primary); color: var(--text-main);"></select>
-        </div>
-        <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
-          <button type="button" class="btn-outline" onclick="closeBookingModal()">Cancel</button>
-          <button type="submit" class="btn-gold">Confirm Reservation</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
+  <!-- Scripts -->
   <script src="diffEngine.js"></script>
-  <script src="app.js?v=3.0"></script>
+  <script src="app.js?v=5.0"></script>
 </body>
 </html>
