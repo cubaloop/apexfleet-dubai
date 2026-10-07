@@ -16,9 +16,26 @@ const DEFAULT_LEASES = [
   { id: "ls-102", customerName: "Alexander Keller", phone: "+971508889900", car: "Rolls-Royce Spectre Black Badge", deposit: 8000, status: "SETTLED_CLEAR" }
 ];
 
-let fleet = JSON.parse(localStorage.getItem('af_fleet') || JSON.stringify(DEFAULT_FLEET));
-let categories = JSON.parse(localStorage.getItem('af_categories') || JSON.stringify(DEFAULT_CATEGORIES));
-let leases = JSON.parse(localStorage.getItem('af_leases') || JSON.stringify(DEFAULT_LEASES));
+function safeGetStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function safeSetStorage(key, val) {
+  try {
+    localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val));
+  } catch (e) {
+    console.warn('[Storage] write error', e);
+  }
+}
+
+let fleet = safeGetStorage('af_fleet', DEFAULT_FLEET);
+let categories = safeGetStorage('af_categories', DEFAULT_CATEGORIES);
+let leases = safeGetStorage('af_leases', DEFAULT_LEASES);
 let currentCategory = 'All';
 let currentLang = 'en';
 let compressedImageDataUrl = null;
@@ -206,40 +223,66 @@ async function runInspectionDemo() {
 
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') || 'light';
-  const next = current === 'light' ? 'dark' : 'light';
+  const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
-  document.getElementById('theme-icon').innerText = next === 'light' ? '🌙' : '☀️';
+  const icon = document.getElementById('theme-icon');
+  if (icon) icon.innerText = next === 'dark' ? '☀️' : '🌙';
+  safeSetStorage('af_theme', next);
 }
 
 function toggleLanguage() {
   currentLang = currentLang === 'en' ? 'ar' : 'en';
   document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
-  document.getElementById('lang-toggle-btn').innerText = currentLang === 'en' ? 'العربية' : 'English';
+  const btn = document.getElementById('lang-toggle-btn');
+  if (btn) btn.innerText = currentLang === 'en' ? 'العربية' : 'English';
 }
 
-function openAdminModal() { document.getElementById('admin-modal').classList.add('active'); renderLeases(); }
-function closeAdminModal() { document.getElementById('admin-modal').classList.remove('active'); }
+function openAdminModal() {
+  const modal = document.getElementById('admin-modal');
+  if (modal) modal.classList.add('active');
+  renderLeases();
+}
+function closeAdminModal() {
+  const modal = document.getElementById('admin-modal');
+  if (modal) modal.classList.remove('active');
+}
 function handleBackdropClick(e) { if (e.target.id === 'admin-modal') closeAdminModal(); }
 
 function switchAdminTab(tabId) {
   document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
   document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-  document.getElementById(tabId).style.display = 'block';
-  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  const target = document.getElementById(tabId);
+  if (target) target.style.display = 'block';
+  const btn = document.querySelector(`[data-tab="${tabId}"]`);
+  if (btn) btn.classList.add('active');
 }
 
-function openBookingModal() { document.getElementById('booking-modal').classList.add('active'); }
-function openBookingModalForCar(carName) { openBookingModal(); document.getElementById('cust-car').value = carName; }
-function closeBookingModal() { document.getElementById('booking-modal').classList.remove('active'); }
+function openBookingModal() {
+  const modal = document.getElementById('booking-modal');
+  if (modal) modal.classList.add('active');
+}
+function openBookingModalForCar(carName) {
+  openBookingModal();
+  const c = document.getElementById('cust-car');
+  if (c) c.value = carName;
+}
+function closeBookingModal() {
+  const modal = document.getElementById('booking-modal');
+  if (modal) modal.classList.remove('active');
+}
 function handleBookingBackdrop(e) { if (e.target.id === 'booking-modal') closeBookingModal(); }
 
 function handleCustomerBooking(e) {
   e.preventDefault();
-  const name = document.getElementById('cust-name').value;
-  const phone = document.getElementById('cust-phone').value;
-  const car = document.getElementById('cust-car').value;
+  const nameEl = document.getElementById('cust-name');
+  const phoneEl = document.getElementById('cust-phone');
+  const carEl = document.getElementById('cust-car');
+  const name = nameEl ? nameEl.value : 'Guest';
+  const phone = phoneEl ? phoneEl.value : '';
+  const car = carEl ? carEl.value : 'Exotic';
+
   leases.push({ id: `ls-${Date.now()}`, customerName: name, phone, car, deposit: 8000, status: 'ESCROW_LOCKED' });
-  localStorage.setItem('af_leases', JSON.stringify(leases));
+  safeSetStorage('af_leases', leases);
   closeBookingModal();
   alert(`Supercar reservation confirmed for ${name}. Deposit escrow locked with SHA-256 pre-lease inspection.`);
 }
@@ -249,8 +292,42 @@ function exportBackupJSON() {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `apexfleet_backup_${Date.now()}.json`; a.click();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+// Window Global Exports
+window.toggleTheme = toggleTheme;
+window.toggleLanguage = toggleLanguage;
+window.openAdminModal = openAdminModal;
+window.closeAdminModal = closeAdminModal;
+window.handleBackdropClick = handleBackdropClick;
+window.switchAdminTab = switchAdminTab;
+window.openBookingModal = openBookingModal;
+window.openBookingModalForCar = openBookingModalForCar;
+window.closeBookingModal = closeBookingModal;
+window.handleBookingBackdrop = handleBookingBackdrop;
+window.handleCustomerBooking = handleCustomerBooking;
+window.exportBackupJSON = exportBackupJSON;
+window.runInspectionDemo = runInspectionDemo;
+window.deleteCar = deleteCar;
+window.addCategory = addCategory;
+window.deleteCategory = deleteCategory;
+window.selectCategory = selectCategory;
+window.saveAnnouncement = saveAnnouncement;
+window.handleSaveCar = handleSaveCar;
+window.handleImageCompress = handleImageCompress;
+
+function initializeApexFleet() {
+  const savedTheme = localStorage.getItem('af_theme');
+  if (savedTheme) {
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    const icon = document.getElementById('theme-icon');
+    if (icon) icon.innerText = savedTheme === 'dark' ? '☀️' : '🌙';
+  }
   renderCategories();
   renderFleet();
   renderLeases();
-});
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', initializeApexFleet);
+} else {
+  initializeApexFleet();
+}
