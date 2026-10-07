@@ -7,7 +7,9 @@ const {
   computeDamageDelta,
   EscrowDeposit,
   LeaseLedger,
-  hashLeaf
+  hashLeaf,
+  validateFramingAndQuality,
+  comparePanelForensics
 } = require('../core');
 const { startWakeLockDaemon } = require('./wakeLock');
 
@@ -65,6 +67,34 @@ app.post('/api/inspection/verify-return', (req, res) => {
     const { preInspection, postInspection, penaltyPerMm } = req.body;
     const delta = computeDamageDelta(preInspection, postInspection, penaltyPerMm);
     res.status(200).json({ success: true, delta });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 4b. POST /api/inspection/validate-frame: Validate framing and lighting with Groq Vision
+app.post('/api/inspection/validate-frame', async (req, res) => {
+  try {
+    const { image, panel } = req.body;
+    if (!image) {
+      return res.status(400).json({ success: false, error: 'Image payload is required' });
+    }
+    const result = await validateFramingAndQuality(image, panel || 'hood');
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 4c. POST /api/inspection/compare-forensics: Side-by-side Groq Vision damage comparison & escrow calculation
+app.post('/api/inspection/compare-forensics', async (req, res) => {
+  try {
+    const { preImage, postImage, panel, depositAmountAed } = req.body;
+    if (!preImage || !postImage) {
+      return res.status(400).json({ success: false, error: 'Both preImage and postImage are required' });
+    }
+    const result = await comparePanelForensics(preImage, postImage, panel || 'hood', depositAmountAed || 8000);
+    res.status(200).json(result);
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

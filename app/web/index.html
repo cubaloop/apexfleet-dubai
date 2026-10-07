@@ -91,16 +91,193 @@
       <div id="fleet-grid" class="bento-grid"></div>
     </section>
 
-    <!-- Cryptographic Inspection Demo Box -->
-    <section class="bento-card" style="margin-bottom: 4rem;">
-      <h3 class="font-display" style="font-size: 1.8rem; margin-bottom: 0.75rem; color: var(--text-main);">
-        16-Panel Merkle Inspection &amp; Escrow Verification
-      </h3>
-      <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; max-width: 650px;">
-        Every vehicle undergoes automated 360° hashing upon departure and return. If all 16 panels match, your deposit escrow is unreserved instantly.
-      </p>
-      <button class="btn-gold" onclick="runInspectionDemo()">Test Inspection Hash Engine</button>
-      <div id="inspection-demo-result" style="display: none; margin-top: 1.25rem; background: var(--bg-primary); padding: 1rem; border-radius: 0.75rem; font-family: monospace; font-size: 0.85rem; color: var(--text-main); word-break: break-all;"></div>
+    <!-- ========================================================
+         GROQ VISION AI — 16-PANEL INSPECTION & ESCROW STATION
+         HUD Framing Reticle • Pre/Post Slots • Forensic Appraisal
+         ======================================================== -->
+    <section class="bento-card" style="margin-bottom: 4rem; border-color: var(--border-gold); background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(203, 178, 121, 0.05) 100%);">
+      
+      <!-- Station Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: var(--accent-gold-soft); border: 1px solid var(--border-gold); color: var(--accent-gold); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.5rem;">
+            <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #25D366;"></span>
+            Groq Vision AI Engine (qwen/qwen3.8-27b &bull; 0.17s)
+          </div>
+          <h2 class="font-display" style="font-size: 2.2rem; color: var(--text-main); margin-bottom: 0.35rem;">
+            Forensic Vehicle Inspection &amp; Escrow Release
+          </h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 680px;">
+            Enforces strict camera HUD reticle alignment before accepting photos. Compares pre-lease departure against post-lease return frames to eliminate deposit disputes with mathematical certainty.
+          </p>
+        </div>
+
+        <!-- Panel Selector Dropdown -->
+        <div style="background: var(--bg-primary); padding: 0.75rem 1rem; border-radius: 1rem; border: 1px solid var(--border-subtle);">
+          <label style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.25rem; font-weight: 600;">Target Inspection Panel:</label>
+          <select id="inspection-panel-select" onchange="handlePanelSelectChange()" style="padding: 0.45rem 0.8rem; border-radius: 0.5rem; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-main); font-size: 0.85rem; font-weight: 600;">
+            <option value="rim_front_left">Rim &amp; Tire (Front Left - 20" Forged)</option>
+            <option value="front_bumper">Front Bumper &amp; Carbon Splitter</option>
+            <option value="hood">Hood &amp; Frunk Panel</option>
+            <option value="driver_door">Driver Door &amp; Side Intake</option>
+            <option value="rear_diffuser">Rear Diffuser &amp; Titanium Exhaust</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- One-Click Preset Demo Scenarios (For Live Pitching) -->
+      <div style="margin-bottom: 2rem; background: var(--bg-primary); padding: 1rem 1.25rem; border-radius: 1rem; border: 1px solid var(--border-subtle);">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span>⚡ Live Demonstration Presets (1-Click Test):</span>
+        </div>
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+          <button class="scenario-pill active" onclick="loadDemoScenario('clean')" id="scenario-clean-btn">
+            🟢 Scenario 1: Clean Return (Pristine - 100% Escrow Released)
+          </button>
+          <button class="scenario-pill" onclick="loadDemoScenario('damaged')" id="scenario-damaged-btn">
+            🔴 Scenario 2: Curb Rash Damage (450 AED Deductible Applied)
+          </button>
+          <button class="scenario-pill" onclick="loadDemoScenario('misaligned')" id="scenario-misaligned-btn">
+            ⚠️ Scenario 3: Bad Framing / Photo Rejected by Groq
+          </button>
+        </div>
+      </div>
+
+      <!-- Dual-Slot HUD Viewfinder Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        
+        <!-- SLOT 1: PRE-LEASE (Salida / Departure) -->
+        <div style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1.25rem; border: 1px solid var(--border-subtle); display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div>
+              <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Slot 1: Pre-Lease</span>
+              <h4 style="font-size: 1.1rem; color: var(--text-main);">Departure Baseline</h4>
+            </div>
+            <span id="pre-frame-badge" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 9999px; font-weight: 600; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-subtle);">
+              Awaiting Frame
+            </span>
+          </div>
+
+          <!-- Viewfinder HUD 1 -->
+          <div id="pre-viewfinder" class="hud-viewfinder">
+            <span class="hud-corner tl"></span>
+            <span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span>
+            <span class="hud-corner br"></span>
+            <div class="hud-crosshair"></div>
+            <div class="hud-scanner"></div>
+            <span class="hud-target-label" id="pre-target-label">ALIGN PANEL IN RETICLE</span>
+            <img id="pre-preview-img" src="assets/supercar_hero.jpg" alt="Pre-Lease Capture">
+          </div>
+
+          <!-- Framing Rejection / Approval Banner 1 -->
+          <div id="pre-status-msg" style="margin-top: 0.75rem; font-size: 0.8rem; padding: 0.6rem 0.85rem; border-radius: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); min-height: 48px; display: flex; align-items: center;">
+            <span style="color: var(--text-muted);">Frame calibrated. Upload photo or use preset.</span>
+          </div>
+
+          <!-- Controls 1 -->
+          <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+            <label class="btn-outline" style="flex: 1; font-size: 0.8rem; padding: 0.45rem 0.8rem; cursor: pointer; text-align: center;">
+              📸 Capture / Upload
+              <input type="file" accept="image/*" onchange="handlePreImageUpload(event)" style="display: none;">
+            </label>
+            <span id="pre-hash-tag" style="font-family: monospace; font-size: 0.7rem; color: var(--text-muted);">SHA-256: Ready</span>
+          </div>
+        </div>
+
+        <!-- SLOT 2: POST-LEASE (Entrega / Return) -->
+        <div style="background: var(--bg-primary); padding: 1.25rem; border-radius: 1.25rem; border: 1px solid var(--border-subtle); display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <div>
+              <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Slot 2: Post-Lease</span>
+              <h4 style="font-size: 1.1rem; color: var(--text-main);">Return Condition</h4>
+            </div>
+            <span id="post-frame-badge" style="font-size: 0.75rem; padding: 0.25rem 0.6rem; border-radius: 9999px; font-weight: 600; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-subtle);">
+              Awaiting Frame
+            </span>
+          </div>
+
+          <!-- Viewfinder HUD 2 -->
+          <div id="post-viewfinder" class="hud-viewfinder">
+            <span class="hud-corner tl"></span>
+            <span class="hud-corner tr"></span>
+            <span class="hud-corner bl"></span>
+            <span class="hud-corner br"></span>
+            <div class="hud-crosshair"></div>
+            <div class="hud-scanner"></div>
+            <span class="hud-target-label" id="post-target-label">ALIGN PANEL IN RETICLE</span>
+            <img id="post-preview-img" src="assets/supercar_hero.jpg" alt="Post-Lease Capture">
+          </div>
+
+          <!-- Framing Rejection / Approval Banner 2 -->
+          <div id="post-status-msg" style="margin-top: 0.75rem; font-size: 0.8rem; padding: 0.6rem 0.85rem; border-radius: 0.5rem; background: var(--bg-surface); border: 1px solid var(--border-subtle); min-height: 48px; display: flex; align-items: center;">
+            <span style="color: var(--text-muted);">Frame calibrated. Upload photo or use preset.</span>
+          </div>
+
+          <!-- Controls 2 -->
+          <div style="margin-top: 0.85rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+            <label class="btn-outline" style="flex: 1; font-size: 0.8rem; padding: 0.45rem 0.8rem; cursor: pointer; text-align: center;">
+              📸 Capture / Upload
+              <input type="file" accept="image/*" onchange="handlePostImageUpload(event)" style="display: none;">
+            </label>
+            <span id="post-hash-tag" style="font-family: monospace; font-size: 0.7rem; color: var(--text-muted);">SHA-256: Ready</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Main Action: Run AI Forensic Analysis & Settle Escrow -->
+      <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+        <button id="run-forensics-btn" class="btn-gold" onclick="executeAIForensicInspection()" style="font-size: 1rem; padding: 0.9rem 2.5rem; box-shadow: 0 10px 25px rgba(203, 178, 121, 0.35);">
+          ⚡ Run Groq AI Forensic Appraisal &amp; Settle Escrow
+        </button>
+      </div>
+
+      <!-- Escrow Settlement & Damage Verdict Console -->
+      <div id="verdict-console" style="display: none; background: var(--bg-primary); border: 1px solid var(--border-gold); border-radius: 1.25rem; padding: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+          <div>
+            <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent-gold); font-weight: 700;">Official Appraisal Dossier</span>
+            <h3 id="verdict-title" class="font-display" style="font-size: 1.8rem; color: var(--text-main);">
+              Inspection Verdict: Calculating...
+            </h3>
+          </div>
+          <div id="verdict-status-pill" style="padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem;">
+            PRISTINE
+          </div>
+        </div>
+
+        <p id="verdict-description" style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
+          Evaluating surface differentials...
+        </p>
+
+        <!-- Financial Escrow Settlement Ledger -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Initial Locked Escrow</div>
+            <div style="font-size: 1.6rem; font-weight: 700; color: var(--text-main); margin-top: 0.25rem;">8,000 AED</div>
+          </div>
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Approved Damage Deductible</div>
+            <div id="verdict-deductible" style="font-size: 1.6rem; font-weight: 700; color: #D93025; margin-top: 0.25rem;">0 AED</div>
+          </div>
+          <div style="background: var(--bg-surface); padding: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Immediate Escrow Release</div>
+            <div id="verdict-refund" style="font-size: 1.6rem; font-weight: 700; color: #25D366; margin-top: 0.25rem;">8,000 AED</div>
+          </div>
+        </div>
+
+        <!-- Cryptographic Proof Footer -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+          <div style="font-family: monospace; font-size: 0.75rem; color: var(--text-muted); word-break: break-all; max-width: 600px;">
+            Proof Hash: <span id="verdict-proof-hash" style="color: var(--accent-gold);">---</span>
+          </div>
+          <button class="btn-outline" onclick="downloadAppraisalDossier()" style="font-size: 0.8rem; padding: 0.45rem 1rem;">
+            Download Certified Appraisal Dossier
+          </button>
+        </div>
+      </div>
+
     </section>
 
   </main>
